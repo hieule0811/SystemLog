@@ -1,0 +1,92 @@
+.clientContainer{
+  // margin-left: 20px;
+  margin-top:10px;
+  // width:calc(100vw - 20px);
+   width:85%;
+  height:calc(100vh - 10px);
+  position: relative;
+}
+.clientTop{
+  background-color: white;
+  margin-bottom:10px;
+  margin-left:15px;
+  border-radius: 5px;
+  width:98%;
+  height:15%;
+  position: relative;
+  hr{
+    width:100%;
+    position:absolute;
+    top:55px;
+  }
+}
+.textTitle{
+  font-size:18px;
+  font-weight:500;
+  position:absolute;
+  top: 80px;
+  left: 10px;
+  hr{
+    width:100%;
+  }
+}
+.test{
+  display:flex;
+  position: absolute;
+  top: 0; /* Đặt phần tử ở giữa theo chiều dọc */
+  left: 50%; /* Đặt phần tử ở giữa theo chiều ngang */
+  transform: translate(-50%); /* Dịch chuyển phần tử điều chỉnh để nằm chính giữa */
+}
+.test1{
+  position: absolute;
+  top: 25px;
+  right: 0;
+  display:flex;
+}
+
+.iconButton {
+  margin-top:27px;
+  margin-left:10px;
+  width: 80px;  /* Chỉnh chiều rộng */
+  height: 35px; /* Chỉnh chiều cao */
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Tùy chọn: Làm cho button thành hình tròn */
+  background-color: #13a89e;
+  border: none;
+  border-radius: 5px;
+  color:white;
+}
+.customFil{
+  font-size:23px;
+  color:white;
+}
+.clientList{
+  list-style-type: none;
+  display:inline-flex;
+  padding:0;
+  li{
+    margin-right:20px;
+    font-size: 20px;
+  }
+}
+.clientAva{
+  display:flex;
+}
+.clientAva1{
+  font-size: 15px;
+  margin-top:5px;
+}
+.clientAva2{
+  font-size: 40px;
+  margin-top:-20px;
+}
+.clientBottom{
+  margin-left: 15px;
+  // background-color: red;
+  width:98%;
+  height:80%;
+  border-radius :5px;
+  background-color: white;
+}

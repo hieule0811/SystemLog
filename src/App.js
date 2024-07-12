@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
+import './App.scss';
+import { Route, Routes } from 'react-router-dom';
+import Client from './Pages/Client.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Helmet } from 'react-helmet';
+import InsertPage from './Pages/InsertPage.js';
+import UpdatePage from './Pages/UpdatePage.js';
+import SystemLogPage from './Pages/SystemLogPage.js';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Helmet>
+        <title>SystemLog</title>
+      </Helmet>
+      <Routes>
+        <Route path = '/client' element = {<Client/>}/>
+        <Route path = '/systemlog' element = {<SystemLogPage/>}/>
+        <Route path = '/client/insert' element = {<InsertPage/>}/>
+        <Route path = '/client/update' element = {<UpdatePage/>}/>
+      </Routes>
     </div>
   );
 }
