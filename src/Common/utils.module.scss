@@ -1,0 +1,13 @@
+.iconEye {
+  cursor: pointer;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  // background-color: #13a89e;
+  border-radius: 4px; // Thêm bo góc nếu cần
+  transition: background-color 0.3s ease; // Hiệu ứng chuyển màu
+
+  &:hover {
+    background-color: darken(#13a89e, 10%); // Tối màu khi hover
+  }
+}

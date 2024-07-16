@@ -3,17 +3,81 @@ import { MdMoreVert } from 'react-icons/md';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { useNavigate } from 'react-router-dom';
-import { CgInsertAfterO } from "react-icons/cg";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+
+const Modal = ({ isOpen, onClose, data }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 1000,
+    }}>
+      <div style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        borderRadius: '5px',
+        textAlign: 'center',
+      }}>
+        <RiErrorWarningLine style={{ color: 'blue', fontSize: '50px' }} />
+        <p style={{ color: 'blue', fontSize: '15px', fontWeight: 'bold' }}>View Log</p>
+        <p><strong>Event Time:</strong> {data.event_time}</p>
+        <p><strong>Created By:</strong> {data.created_by}</p>
+        <p><strong>Event Source:</strong> {data.event_source}</p>
+        <p><strong>Source Code:</strong> {data.source_code}</p>
+        <p><strong>Event Type:</strong> {data.event_type}</p>
+        <p><strong>Changed Data:</strong> {data.changed_data}</p>
+        <button onClick={onClose} style={{ marginTop: '10px', color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Close</button>
+      </div>
+    </div>
+  );
+};
+const ActionIcon = ({ row }) => {
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleClick = () => {
+    setShowDetails(true);
+  };
+
+  const handleClose = () => {
+    setShowDetails(false);
+  };
+
+  return (
+    <>
+      <MdOutlineRemoveRedEye onClick={handleClick} style={{
+      cursor: 'pointer',
+      color: 'white',
+      backgroundColor: '#13a89e',
+      width: '20px',
+      height: '18px',
+      borderRadius: '3px',
+      transition: 'background-color 0.3s ease'
+    }} />
+      <Modal isOpen={showDetails} onClose={handleClose} data={row} />
+    </>
+  );
+};
+
+
 const ActionMenu = ({row}) => {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
   const handleMenuClick = (action) => {
     switch (action) {
-      case 'insert':
-        navigate('/client/insert', { state: { row } });
-        break;
+      // case 'insert':
+      //   navigate('/client/insert', { state: { row } });
+      //   break;
       case 'update':
         navigate('/client/update', { state: { row } });
         break;
@@ -36,10 +100,10 @@ const ActionMenu = ({row}) => {
   return (
     <>
     <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
-      <MenuItem onClick={() => handleMenuClick('insert')}>
+      {/* <MenuItem onClick={() => handleMenuClick('insert')}>
       <CgInsertAfterO style={{ color: 'green', marginRight: '10px',fontSize:'15px' }} />
       Insert
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={() => handleMenuClick('update')}>
       <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
       Update
@@ -81,6 +145,82 @@ const ActionMenu = ({row}) => {
     </>
   );
 };
+
+// const ActionMenu = ({row}) => {
+//   const navigate = useNavigate();
+//   const [showConfirm, setShowConfirm] = useState(false);
+//   const handleMenuClick = (action) => {
+//     switch (action) {
+//       case 'insert':
+//         navigate('/client/insert', { state: { row } });
+//         break;
+//       case 'update':
+//         navigate('/client/update', { state: { row } });
+//         break;
+//       case 'delete':
+//         setShowConfirm(true);
+//         break;
+//       default:
+//         break;
+//     }
+//   };
+//   const handleDelete = () => {
+//     // Logic to delete the record
+//     setShowConfirm(false);
+//     console.log('Record deleted', row);
+//   };
+
+//   const handleCancel = () => {
+//     setShowConfirm(false);
+//   };
+//   return (
+//     <>
+//     <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
+//       <MenuItem onClick={() => handleMenuClick('insert')}>
+//       <CgInsertAfterO style={{ color: 'green', marginRight: '10px',fontSize:'15px' }} />
+//       Insert
+//       </MenuItem>
+//       <MenuItem onClick={() => handleMenuClick('update')}>
+//       <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
+//       Update
+//       </MenuItem>
+//       <MenuItem onClick={() => handleMenuClick('delete')}>
+//       <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
+//       Delete
+//       </MenuItem>
+//     </Menu>
+//     {showConfirm && (
+//         <div style={{
+//           position: 'fixed',
+//           top: '0',
+//           left: '0',
+//           width: '100%',
+//           height: '100%',
+//           display: 'flex',
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//           zIndex: 1000,
+//         }}>
+//           <div style={{
+//             padding: '20px',
+//             backgroundColor: '#b2d0f9',
+//             border:'none',
+//             borderRadius: '5px',
+//             textAlign: 'center',
+//           }}>
+//             <RiErrorWarningLine
+//             style = {{ color: 'blue', fontSize: '50px'}}
+//             />
+//             <p style = {{ color:'blue',fontSize:'15px', fontWeight:'bold' }}>CONFIRM</p>
+//             <p>Are you sure want to delete this record?</p>
+//             <button onClick={handleDelete} style={{ marginRight: '10px', color: 'white', backgroundColor: 'red', border: 'none', padding: '10px', borderRadius: '5px' }}>Delete</button>
+//             <button onClick={handleCancel} style={{ color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Cancel</button>
+//           </div>
+//         </div>
+//     )}
+//     </>
+//   );
+// };
 export const headerData = [
   {
     Header: 'Action',
@@ -494,8 +634,8 @@ export const headerData1 = [
     Header: 'Action',
     accessor: 'action',
     align: 'center',
-    Cell: ({ row }) => <ActionMenu row={row.original} />,
-    width:50,
+    width:45,
+    Cell: ({ row }) => <ActionIcon row={row.original} />,
   },
   {
     Header: 'Event Time',
@@ -551,6 +691,7 @@ export const bodyData1 = [
     new_row_data: ' veverergregergregregregreger',
   },
   {
+
     event_time: '2021-09-23 10:00:00',
     created_by: 'TrungHieu',
     event_source: 'Client',

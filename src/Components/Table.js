@@ -8,8 +8,6 @@ const Table = ({ columns, data }) => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-
-
     page,
     canPreviousPage,
     canNextPage,

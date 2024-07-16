@@ -9,6 +9,9 @@ import { RxAvatar } from "react-icons/rx";
 import { FaTrash } from 'react-icons/fa';
 import Table from '../Components/Table.js';
 import {headerData1, bodyData1} from '../Common/utils.js';
+import { Menu, MenuItem } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
 
 const operatorOptions = {
   column1: ['equals', 'not equals', 'contains', 'does not contain'],
@@ -104,7 +107,19 @@ const SystemLogPage = () =>{
     );
     setFilters(newFilters);
   };
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleClosed = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+  };
   return(
     <div className = {styles.systemlogContainer}>
       <div className = {styles.systemlogTop}>
@@ -145,9 +160,21 @@ const SystemLogPage = () =>{
           <ul className = {styles.systemlogList}>
             <li><LuBellRing /></li>
             <li>
-              <div className = {styles.systemlogAva}>
+              <div className = {styles.systemlogAva} onClick  = {handleClick}>
                 <div className = {styles.systemlogAva1}>TrungHieu</div>
                 <div className = {styles.systemlogAva2}><RxAvatar/></div>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClosed}
+                >
+                  <Link to = "/" style = {{ textDecoration:'none', color: 'inherit' }}>
+                    <MenuItem onClick={handleLogout}>
+                      <FiLogOut style={{ marginRight: '5px' }} /> Logout
+                    </MenuItem>
+                  </Link>
+
+                </Menu>
               </div>
             </li>
           </ul>

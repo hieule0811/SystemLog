@@ -101,9 +101,11 @@ const Sidebar = () => {
               </div>
             </li>
             <li>
-              <button className={styles.SidebarButton}>
-                <CiLogout /> Logout
-              </button>
+              <Link to = "/">
+                <button className={styles.SidebarButton}>
+                  <CiLogout /> Logout
+                </button>
+              </Link>
             </li>
           </ul>
         </div>

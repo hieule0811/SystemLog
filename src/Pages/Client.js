@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import Sidebar from '../Components/Sidebar.js';
 import styles from '../Styles/Client.module.scss';
 import { Form, FormControl, Button, InputGroup,Modal } from 'react-bootstrap';
@@ -7,9 +8,11 @@ import { CiFilter } from "react-icons/ci";
 import { LuBellRing } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
 import { FaTrash } from 'react-icons/fa';
+import { IoIosAdd } from "react-icons/io";
+import { FiLogOut } from 'react-icons/fi';
 import Table from '../Components/Table.js';
 import {headerData, bodyData} from '../Common/utils.js';
-
+import { Menu, MenuItem } from '@mui/material';
 const operatorOptions = {
   column1: ['equals', 'not equals', 'contains', 'does not contain'],
   column2: ['greater than', 'less than', 'equals', 'not equals'],
@@ -104,7 +107,19 @@ const Client = () =>{
     );
     setFilters(newFilters);
   };
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleClosed = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+  };
   return(
     <div className = {styles.clientContainer}>
       <div className = {styles.clientTop}>
@@ -132,6 +147,11 @@ const Client = () =>{
             <button className = {styles.iconButton} onClick={handleShow}>
               <CiFilter className = {styles.customFil}/> FILTER
             </button>
+            <Link to = "/client/insert">
+            <button className = {styles.addButton}>
+              <IoIosAdd className = {styles.customAdd}/>
+            </button>
+            </Link>
             <ModalComponent
               show={show}
               handleClose={handleClose}
@@ -145,9 +165,21 @@ const Client = () =>{
           <ul className = {styles.clientList}>
             <li><LuBellRing /></li>
             <li>
-              <div className = {styles.clientAva}>
+              <div className = {styles.clientAva} onClick={handleClick}>
                 <div className = {styles.clientAva1}>TrungHieu</div>
                 <div className = {styles.clientAva2}><RxAvatar/></div>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClosed}
+                >
+                  <Link to = "/" style = {{ textDecoration:'none', color: 'inherit' }}>
+                    <MenuItem onClick={handleLogout}>
+                      <FiLogOut style={{ marginRight: '5px' }} /> Logout
+                    </MenuItem>
+                  </Link>
+
+                </Menu>
               </div>
             </li>
           </ul>
