@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface ActivityLogRepository extends JpaRepository<ActivityLog,String> {
     List<ActivityLog> findByEventType(String eventType);
-    List<ActivityLog> findByEventTimeBetween(LocalDateTime startTime, LocalDateTime endTime);
-    void deleteByEventTimeBetween(LocalDateTime startTime, LocalDateTime endTime);
+    List<ActivityLog> findByCreatedAtBetween(LocalDateTime startTime, LocalDateTime endTime);
+    void deleteByCreatedAtBetween(LocalDateTime startTime, LocalDateTime endTime);
     @Query("SELECT a FROM ActivityLog a WHERE " +
             "LOWER(a.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(a.eventSource) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

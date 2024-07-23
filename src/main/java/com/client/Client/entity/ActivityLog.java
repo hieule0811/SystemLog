@@ -10,11 +10,16 @@ public class ActivityLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "event_time", nullable = false)
-    private LocalDateTime eventTime;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "created_by", nullable = false, length = 15)
     private String createdBy;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by", nullable = false, length = 15)
+    private String updatedBy;
 
     @Column(name = "event_source", nullable = false, length = 30)
     private String eventSource;
@@ -43,12 +48,28 @@ public class ActivityLog {
         this.id = id;
     }
 
-    public LocalDateTime getEventTime() {
-        return eventTime;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEventTime(LocalDateTime eventTime) {
-        this.eventTime = eventTime;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public String getCreatedBy() {

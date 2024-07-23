@@ -1,15 +1,20 @@
 package com.client.Client.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "client")
@@ -20,8 +25,27 @@ public class Client {
     @Size(min = 4, message = "Code must be at least 4 characters")
     @NotBlank
     private String code;
+
+    @Column(name = "created_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by", nullable = false, length = 15)
+    private String createdBy;
+    @Column(name = "updated_at")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by", nullable = false, length = 15)
+    private String updatedBy;
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+    @Column(name = "birthday", nullable = false, length = 50)
+    private Date birthday;
     @Column(name = "country", nullable = false, length = 20)
     private String country;
     @Column(name = "city", nullable = false, length = 20)
@@ -51,7 +75,37 @@ public class Client {
         this.code = code;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     public String getName() {
         return name;
@@ -59,6 +113,14 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getCountry() {
@@ -132,6 +194,13 @@ public class Client {
     public void setStatus(boolean status) {
         this.status = status;
     }
+    // Khởi tạo giá trị cho trước
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+       // this.createdBy = "system";
+    }
+
     // in Json
     @Override
     public String toString() {

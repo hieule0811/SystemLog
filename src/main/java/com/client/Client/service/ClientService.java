@@ -1,12 +1,12 @@
 package com.client.Client.service;
 
-import com.client.Client.dto.request.ClientCreationRequest;
 import com.client.Client.dto.request.ClientUpdateRequest;
 import com.client.Client.entity.Client;
 import com.client.Client.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -58,6 +58,8 @@ public class ClientService {
     public Client updateClient(String codeClient, ClientUpdateRequest request){
         Client client = getClient(codeClient);
 
+        client.setUpdatedAt(LocalDateTime.now());
+        client.setUpdatedBy(request.getUpdatedBy());
         client.setName(request.getName());
         client.setCountry(request.getCountry());
         client.setCity(request.getCity());

@@ -1,6 +1,9 @@
 package com.client.Client.dto.request;
 
 public class ClientUpdateRequest {
+
+    private String updatedAt;
+    private String updatedBy;
     private String name;
     private String country;
     private String city;
@@ -11,6 +14,22 @@ public class ClientUpdateRequest {
     private int postal_code;
     private String email;
     private boolean status;
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     public String getName() {
         return name;

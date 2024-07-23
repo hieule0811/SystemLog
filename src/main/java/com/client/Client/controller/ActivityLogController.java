@@ -34,7 +34,7 @@ public class ActivityLogController {
     }
 
     // tìm kiếm log dựa vào event type
-    @GetMapping("/eventType/{eventType}")
+        @GetMapping("/eventType/{eventType}")
     ResponseEntity<List<ActivityLog>> getLogsByEventType(@PathVariable String eventType) {
         String UpperCaseEventType = eventType.toUpperCase();
         List<ActivityLog> logs = activityLogService.getLogsByEventType(UpperCaseEventType);
@@ -56,7 +56,7 @@ public class ActivityLogController {
     public ResponseEntity<String> deleteLogsBetweenTime(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
-        activityLogService.deleteByEventTimeBetween(startTime, endTime);
+            activityLogService.deleteByEventTimeBetween(startTime, endTime);
         return ResponseEntity.ok("Deleted logs between " + startTime + " and " + endTime);
     }
 }

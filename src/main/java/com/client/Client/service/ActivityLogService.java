@@ -14,14 +14,14 @@ public class ActivityLogService {
     @Autowired
     private ActivityLogRepository activityLogRepository;
 
-    public void logDeleteAction(String createdBy, String dataOld) {
+    public void logDeleteAction(String editor, String dataOld) {
         ActivityLog log = new ActivityLog();
 
-        log.setEventTime(LocalDateTime.now());
-        log.setCreatedBy(createdBy);
-        log.setEventSource("Client API");
+        log.setCreatedAt(LocalDateTime.now());
+        log.setCreatedBy(editor);
+        log.setEventSource("API");
         log.setEventType("DELETE");
-        log.setSourceCode(createdBy);
+        log.setSourceCode(editor);
         log.setChangedData(null);
         log.setDataOld(dataOld);
         log.setDataNew(null);
@@ -37,7 +37,7 @@ public class ActivityLogService {
     }
     //lọc theo time
     public List<ActivityLog> getLogsBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
-        return activityLogRepository.findByEventTimeBetween(startTime, endTime);
+        return activityLogRepository.findByCreatedAtBetween(startTime, endTime);
     }
     //lọc theo từng chữ cái
     public List<ActivityLog> searchInAllColumns(String keyword) {
@@ -47,7 +47,7 @@ public class ActivityLogService {
     //xóa theo khoảng time
     @Transactional
     public void deleteByEventTimeBetween(LocalDateTime startTime, LocalDateTime endTime) {
-        activityLogRepository.deleteByEventTimeBetween(startTime, endTime);
+        activityLogRepository.deleteByCreatedAtBetween(startTime, endTime);
     }
 
 }
