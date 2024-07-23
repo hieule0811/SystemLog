@@ -5,7 +5,7 @@ CREATE TABLE client
     created_by VARCHAR(30),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(30),
-    code VARCHAR(16) NOT NULL PRIMARY KEY,
+    code VARCHAR(6) NOT NULL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     birthday DATE,
     country VARCHAR(20) NOT NULL,
