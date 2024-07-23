@@ -5,7 +5,7 @@ CREATE TABLE client
     created_by VARCHAR(30),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(30),
-    code VARCHAR(15) NOT NULL PRIMARY KEY,
+    code VARCHAR(16) NOT NULL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     birthday DATE,
     country VARCHAR(20) NOT NULL,
@@ -52,40 +52,59 @@ $$ LANGUAGE plpgsql;
 
 -- Tạo hàm log_client_changes để log các thay đổi trên bảng client
 CREATE OR REPLACE FUNCTION log_client_changes()
-RETURNS TRIGGER AS $$
-DECLARE
-    old_data JSONB;
-    new_data JSONB;
-    changed_data TEXT;
-BEGIN
-    IF TG_OP = 'INSERT' THEN
-        new_data := to_jsonb(NEW.*);
-        
-        INSERT INTO activity_log (
-            created_at, created_by, event_source, source_code, event_type, data_new
-        ) VALUES (
-            CURRENT_TIMESTAMP, NEW.created_by, 'Trigger', NEW.code, 'INSERT', new_data::text
-        );
-        RETURN NEW;
-    ELSIF TG_OP = 'UPDATE' THEN
-        old_data := to_jsonb(OLD.*);
-        new_data := to_jsonb(NEW.*);
-        
-        changed_data := json_diff(old_data, new_data);
-        
-        INSERT INTO activity_log (
-            created_at, created_by, updated_at,updated_by,event_source, source_code, event_type, changed_data, data_old, data_new
-        ) VALUES (
-            CURRENT_TIMESTAMP, OLD.created_by,CURRENT_TIMESTAMP,NEW.updated_by, 'Trigger', NEW.code, 'UPDATE', changed_data, old_data::text, new_data::text
-        );
-        RETURN NEW;
-    END IF;
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+	RETURNS TRIGGER AS $$
+	DECLARE
+	    old_data JSONB;
+	    new_data JSONB;
+	    changed_data TEXT;
+	BEGIN
+	    IF TG_OP = 'INSERT' THEN
+	        new_data := to_jsonb(NEW.*);
+	        
+	        INSERT INTO activity_log (
+	            created_at, created_by, updated_at, event_source, source_code, event_type, data_new,client_id
+	        ) VALUES (
+	            CURRENT_TIMESTAMP, NEW.created_by,null, 'Trigger', NEW.code, 'INSERT', new_data::text,new.id 
+	        );
+	        RETURN NEW;
+	    ELSIF TG_OP = 'UPDATE' THEN
+	        old_data := to_jsonb(OLD.*);
+	        new_data := to_jsonb(NEW.*);
+	        
+	        changed_data := json_diff(old_data, new_data);
+	        
+	        INSERT INTO activity_log (
+	            created_at, created_by, updated_at,updated_by,event_source, source_code, event_type, changed_data, data_old, data_new,client_id
+	        ) VALUES (
+	            CURRENT_TIMESTAMP, OLD.created_by,CURRENT_TIMESTAMP,NEW.updated_by, 'Trigger', NEW.code, 'UPDATE', changed_data, old_data::text, new_data::text,new.id 
+	        );
+	        RETURN NEW;
+	    END IF;
+	    RETURN NULL;
+	END;
+	$$ LANGUAGE plpgsql;
 
 -- Tạo trigger để log các hoạt động INSERT và UPDATE trên bảng client
 CREATE TRIGGER client_changes_trigger
 AFTER INSERT OR UPDATE ON client
 FOR EACH ROW
 EXECUTE FUNCTION log_client_changes();
+
+
+
+--==============================================================
+--UPDATE  Ngày 23/7
+--có sửa lại trigger
+--thêm id và khóa ngoại
+ALTER TABLE client
+ADD COLUMN id SERIAL UNIQUE;
+
+ALTER TABLE activity_log
+ADD COLUMN client_id INT;
+
+-- Thêm khóa ngoại cho cột client_id
+ALTER TABLE activity_log
+ADD CONSTRAINT fk_client
+FOREIGN KEY (client_id) REFERENCES client(id);
+
+

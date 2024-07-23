@@ -36,9 +36,6 @@ public class ClientService {
 //        return clientRepository.save(client);
 //    }
     public Client createClient(Client client) {
-        if (clientRepository.existsById(client.getCode())) {
-            throw new IllegalArgumentException("Client with code " + client.getCode() + " already exists");
-        }
         return clientRepository.save(client);
     }
 // xuất thông tin 1 client

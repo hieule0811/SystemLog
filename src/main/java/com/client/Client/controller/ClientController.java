@@ -22,14 +22,9 @@ public class ClientController {
     // insert client
     @PostMapping
     public ResponseEntity<ApiResponse<Client>> createClient(@RequestBody @Valid Client client) {
-        try {
-            Client createdClient = clientService.createClient(client);
-            ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Client created successfully", createdClient);
-            return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-        } catch (IllegalArgumentException e) {
-            ApiResponse<Client> errorResponse = new ApiResponse<>(false, e.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-        }
+        Client createdClient = clientService.createClient(client);
+        ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Client created successfully", createdClient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
     // xuất all client
     @GetMapping()
