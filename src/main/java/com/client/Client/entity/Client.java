@@ -64,7 +64,7 @@ public class Client {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    @Column(name = "id")
+    @Column(name = "id",nullable = false)
     private Long id;
 
 

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clients")
@@ -39,18 +40,23 @@ public class ClientController {
         return ResponseEntity.ok(client);
     }
 
-    @GetMapping("/{codeClient}")
+    //xuất 1 client bằng code
+    @GetMapping("/code/{codeClient}")
     ResponseEntity<Client> getClient(@PathVariable ("codeClient") String codeClient){
         Client client = clientService.getClient(codeClient);
         return ResponseEntity.ok(client);
     }
 
-    @PutMapping("/{codeClient}")
+
+    //update 1 client bằng code
+    @PutMapping("/code/{codeClient}")
     ResponseEntity<Client> updateClient(@PathVariable ("codeClient") String codeClient, @RequestBody ClientUpdateRequest request){
         Client client = clientService.updateClient(codeClient,request);
         return ResponseEntity.ok(client);
     }
-    @DeleteMapping("/{codeClient}")
+
+    // delete client bằng code
+    @DeleteMapping("/code/{codeClient}")
     public ResponseEntity<ApiResponse<Client>> deleteClient(@PathVariable String codeClient, @RequestHeader("editor") String editor) {
         Client client = clientService.getClient(codeClient);
         clientService.deleteClient(codeClient);
@@ -59,11 +65,29 @@ public class ClientController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    //// delete client bằng id
     @DeleteMapping("/id/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id, @RequestHeader("editor") String editor) {
         Client client = clientService.getClientId(id);
         clientService.deleteClientById(id);
         activityLogService.logDeleteAction(editor, client.toString());
         return ResponseEntity.ok().body("Client deleted successfully!");
+    }
+
+    // delete nhiều client cùng 1 lúc bằng code
+    @DeleteMapping("/codes")
+    public ResponseEntity<?> deleteClientsByCodes(@RequestBody List<String> codes,@RequestHeader("editor") String editor) {
+        List<Client> clients = clientService.FindClientsByCodes(codes);
+//        String dataOld = clients.stream()
+//                .map(client -> client.toString()) // Cần tạo phương thức toString() cho Client
+//                .collect(Collectors.joining(", "));
+//        clientService.deleteClientsByCodes(codes);
+//        activityLogService.logDeleteAction(editor, clients.toString());
+
+        for (Client client : clients) {
+            activityLogService.logDeleteAction(editor, client.toString());
+            clientService.deleteClientsByCodes(codes);
+
+        }        return ResponseEntity.ok("Clients deleted successfully");
     }
 }

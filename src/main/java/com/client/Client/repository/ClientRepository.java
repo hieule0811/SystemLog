@@ -12,4 +12,7 @@ public interface ClientRepository extends JpaRepository<Client, String> {
     List<Client> findByNameContainingIgnoreCase(String name);
     boolean existsByCode(String code);
     Optional<Client> findById(Long id);
+    void deleteByCodeIn(List<String> codes);
+    List<Client> findByCodeIn(List<String> codes);
+
 }

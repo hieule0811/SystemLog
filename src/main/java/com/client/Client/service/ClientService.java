@@ -93,5 +93,13 @@ public class ClientService {
         // activityLogService.logClientDeletion(client);
     }
 
-
+    @Transactional
+    public List<Client> FindClientsByCodes(List<String> codes) {
+        return clientRepository.findByCodeIn(codes); // get nhiều client theo danh sách mã code
+    }
+    // delete nhiều client 1 lúc
+    @Transactional
+    public void deleteClientsByCodes(List<String> codes) {
+        clientRepository.deleteByCodeIn(codes); // Xóa nhiều client theo danh sách mã code
+    }
 }
