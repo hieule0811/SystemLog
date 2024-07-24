@@ -13,6 +13,9 @@ public interface ClientRepository extends JpaRepository<Client, String> {
     boolean existsByCode(String code);
     Optional<Client> findById(Long id);
     void deleteByCodeIn(List<String> codes);
+    void deleteByIdIn(List<Long> ids);
     List<Client> findByCodeIn(List<String> codes);
+    List<Client> findByIdIn(List<Long> ids);
+
 
 }

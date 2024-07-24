@@ -76,6 +76,25 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    public Client updateClient(Long idClient, ClientUpdateRequest request){
+        Client client = getClientId(idClient);
+
+        client.setUpdatedAt(LocalDateTime.now());
+        client.setUpdatedBy(request.getUpdatedBy());
+        client.setName(request.getName());
+        client.setCountry(request.getCountry());
+        client.setCity(request.getCity());
+        client.setUnloco(request.getUnloco());
+        client.setOffice_address(request.getOffice_address());
+        client.setSuburb(request.getSuburb());
+        client.setState(request.getState());
+        client.setPostal_code(request.getPostal_code());
+        client.setEmail(request.getEmail());
+        client.setStatus(request.isStatus());
+
+        return clientRepository.save(client);
+    }
+
     //xóa
     public void deleteClient(String codeClient){
          clientRepository.deleteById(codeClient);
@@ -97,9 +116,17 @@ public class ClientService {
     public List<Client> FindClientsByCodes(List<String> codes) {
         return clientRepository.findByCodeIn(codes); // get nhiều client theo danh sách mã code
     }
+    @Transactional
+    public List<Client> FindClientsByIds(List<Long> ids) {
+        return clientRepository.findByIdIn(ids); // get nhiều client theo danh sách mã code
+    }
     // delete nhiều client 1 lúc
     @Transactional
     public void deleteClientsByCodes(List<String> codes) {
         clientRepository.deleteByCodeIn(codes); // Xóa nhiều client theo danh sách mã code
+    }
+    @Transactional
+    public void deleteClientsByIds(List<Long> ids) {
+        clientRepository.deleteByIdIn(ids); // Xóa nhiều client theo danh sách mã code
     }
 }

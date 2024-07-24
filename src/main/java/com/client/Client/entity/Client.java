@@ -20,7 +20,8 @@ import java.util.Date;
 @Entity
 @Table(name = "client")
 public class Client {
-
+    @Column(name = "id",nullable = false)
+    private Long id;
     @Id
     @Column(name = "code", length = 6)
     private String code;
@@ -64,8 +65,7 @@ public class Client {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    @Column(name = "id",nullable = false)
-    private Long id;
+
 
 
     // Getters and Setters

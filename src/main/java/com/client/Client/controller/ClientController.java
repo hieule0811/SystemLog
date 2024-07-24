@@ -33,7 +33,7 @@ public class ClientController {
         List <Client> client = clientService.getAllClient();
         return ResponseEntity.ok(client);
     }
-
+    // tìm kiếm
         @GetMapping("/search/{name}")
     ResponseEntity<List<Client>> getClientsByName (@PathVariable String name){
         List <Client> client = clientService.getClientsByName(name);
@@ -42,16 +42,27 @@ public class ClientController {
 
     //xuất 1 client bằng code
     @GetMapping("/code/{codeClient}")
-    ResponseEntity<Client> getClient(@PathVariable ("codeClient") String codeClient){
+    ResponseEntity<Client> getClientByCode(@PathVariable ("codeClient") String codeClient){
         Client client = clientService.getClient(codeClient);
         return ResponseEntity.ok(client);
     }
-
+    //xuất 1 client bằng id
+    @GetMapping("/id/{idClient}")
+    ResponseEntity<Client> getClientById(@PathVariable ("idClient") Long idClient){
+        Client client = clientService.getClientId(idClient);
+        return ResponseEntity.ok(client);
+    }
 
     //update 1 client bằng code
     @PutMapping("/code/{codeClient}")
-    ResponseEntity<Client> updateClient(@PathVariable ("codeClient") String codeClient, @RequestBody ClientUpdateRequest request){
+    ResponseEntity<Client> updateClientByCode(@PathVariable ("codeClient") String codeClient, @RequestBody ClientUpdateRequest request){
         Client client = clientService.updateClient(codeClient,request);
+        return ResponseEntity.ok(client);
+    }
+    //update 1 client bằng id
+    @PutMapping("/id/{idClient}")
+    ResponseEntity<Client> updateClientById(@PathVariable ("idClient") Long idClient, @RequestBody ClientUpdateRequest request){
+        Client client = clientService.updateClient(idClient,request);
         return ResponseEntity.ok(client);
     }
 
@@ -87,6 +98,17 @@ public class ClientController {
         for (Client client : clients) {
             activityLogService.logDeleteAction(editor, client.toString());
             clientService.deleteClientsByCodes(codes);
+
+        }        return ResponseEntity.ok("Clients deleted successfully");
+    }
+
+    // delete nhiều client cùng 1 lúc bằng id
+    @DeleteMapping("/ids")
+    public ResponseEntity<?> deleteClientsById(@RequestBody List<Long> ids,@RequestHeader("editor") String editor) {
+        List<Client> clients = clientService.FindClientsByIds(ids);
+        for (Client client : clients) {
+            activityLogService.logDeleteAction(editor, client.toString());
+            clientService.deleteClientsByIds(ids);
 
         }        return ResponseEntity.ok("Clients deleted successfully");
     }
