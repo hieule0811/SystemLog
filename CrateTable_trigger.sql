@@ -105,6 +105,24 @@ ADD COLUMN client_id INT;
 -- Thêm khóa ngoại cho cột client_id
 ALTER TABLE activity_log
 ADD CONSTRAINT fk_client
-FOREIGN KEY (client_id) REFERENCES client(id);
+FOREIGN KEY (client_id) REFERENCES client(id)
+ON DELETE SET null;
+--==============================================================
+--UPDATE  Ngày 24/7
+-- SEQUENCE tăng tự động cho id
+CREATE SEQUENCE client_id_seq;
+CREATE OR REPLACE FUNCTION set_client_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.id := nextval('client_id_seq');
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_client_id_before_insert
+BEFORE INSERT ON client
+FOR EACH ROW
+EXECUTE FUNCTION set_client_id();
+
 
 

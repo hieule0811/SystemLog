@@ -33,7 +33,7 @@ public class ClientController {
         return ResponseEntity.ok(client);
     }
 
-    @GetMapping("/search/{name}")
+        @GetMapping("/search/{name}")
     ResponseEntity<List<Client>> getClientsByName (@PathVariable String name){
         List <Client> client = clientService.getClientsByName(name);
         return ResponseEntity.ok(client);
@@ -57,5 +57,13 @@ public class ClientController {
         activityLogService.logDeleteAction(editor, client.toString());
         ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Client with code " + codeClient + " deleted successfully", null);
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<?> deleteClient(@PathVariable Long id, @RequestHeader("editor") String editor) {
+        Client client = clientService.getClientId(id);
+        clientService.deleteClientById(id);
+        activityLogService.logDeleteAction(editor, client.toString());
+        return ResponseEntity.ok().body("Client deleted successfully!");
     }
 }

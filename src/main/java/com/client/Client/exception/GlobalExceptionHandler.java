@@ -20,4 +20,5 @@ public class GlobalExceptionHandler {
     ResponseEntity<String> MethodArgumentNotValidException(MethodArgumentNotValidException exception){
         return ResponseEntity.badRequest().body(exception.getFieldError().getDefaultMessage());
     }
+
 }

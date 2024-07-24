@@ -2,7 +2,9 @@ package com.client.Client.service;
 
 import com.client.Client.dto.request.ClientUpdateRequest;
 import com.client.Client.entity.Client;
+import com.client.Client.exception.ResourceNotFoundException;
 import com.client.Client.repository.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,9 @@ public class ClientService {
     public Client getClient(String codeClient){
         return clientRepository.findById(codeClient).orElseThrow(()->new RuntimeException("Client with code " + codeClient + " not found"));
     }
+    public Client getClientId(Long id){
+        return clientRepository.findById(id).orElseThrow(()->new RuntimeException("Client with code " + id + " not found"));
+    }
 // lọc theo từng chữ cái của name
     public List<Client> getClientsByName(String name){
         return clientRepository.findByNameContainingIgnoreCase(name);
@@ -75,7 +80,18 @@ public class ClientService {
     public void deleteClient(String codeClient){
          clientRepository.deleteById(codeClient);
     }
-    // update lại id
+    // xóa bằng id
+    @Transactional
+    public void deleteClientById(Long id) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + id));
+
+        // Xử lý xóa client
+        clientRepository.delete(client);
+
+        // Ghi log nếu cần
+        // activityLogService.logClientDeletion(client);
+    }
 
 
 }
