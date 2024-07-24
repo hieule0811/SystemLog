@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,16 +56,31 @@ public class ClientController {
 
     //update 1 client bằng code
     @PutMapping("/code/{codeClient}")
-    ResponseEntity<Client> updateClientByCode(@PathVariable ("codeClient") String codeClient, @RequestBody ClientUpdateRequest request){
-        Client client = clientService.updateClient(codeClient,request);
+    ResponseEntity<Client> updateClientByCode(@PathVariable ("codeClient") String codeClient, @RequestBody Client request){
+        Client client = clientService.updateClientByCode(codeClient,request);
         return ResponseEntity.ok(client);
     }
     //update 1 client bằng id
     @PutMapping("/id/{idClient}")
-    ResponseEntity<Client> updateClientById(@PathVariable ("idClient") Long idClient, @RequestBody ClientUpdateRequest request){
-        Client client = clientService.updateClient(idClient,request);
+    ResponseEntity<Client> updateClientById(@PathVariable ("idClient") Long idClient, @RequestBody Client request){
+        Client client = clientService.updateClientById(idClient,request);
         return ResponseEntity.ok(client);
     }
+
+    // update nhiều client bằng code
+    @PutMapping("/updateByCodes")
+    public ResponseEntity<String> updateClientsByCode(@RequestBody List<Client> clients) {
+        clientService.updateClientsByCode(clients);
+        return ResponseEntity.ok("Clients updated successfully");
+    }
+
+    // update nhiều client bằng ID
+    @PutMapping("/updateById")
+    public ResponseEntity<String> updateClients(@RequestBody List<Client> clients) {
+        clientService.updateClientsById(clients);
+        return ResponseEntity.ok("Clients updated successfully");
+    }
+
 
     // delete client bằng code
     @DeleteMapping("/code/{codeClient}")
@@ -99,7 +115,8 @@ public class ClientController {
             activityLogService.logDeleteAction(editor, client.toString());
             clientService.deleteClientsByCodes(codes);
 
-        }        return ResponseEntity.ok("Clients deleted successfully");
+        }
+        return ResponseEntity.ok("Clients deleted successfully");
     }
 
     // delete nhiều client cùng 1 lúc bằng id
@@ -109,7 +126,8 @@ public class ClientController {
         for (Client client : clients) {
             activityLogService.logDeleteAction(editor, client.toString());
             clientService.deleteClientsByIds(ids);
-
-        }        return ResponseEntity.ok("Clients deleted successfully");
+        }
+        return ResponseEntity.ok("Clients deleted successfully");
     }
+
 }

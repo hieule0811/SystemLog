@@ -16,6 +16,7 @@ public interface ClientRepository extends JpaRepository<Client, String> {
     void deleteByIdIn(List<Long> ids);
     List<Client> findByCodeIn(List<String> codes);
     List<Client> findByIdIn(List<Long> ids);
+    Optional<Client> findByCode(String code);
 
 
 }

@@ -10,33 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
-//thêm client
-//    public Client createClient(ClientCreationRequest request){
-//        Client client = new Client();
-//
-//        if(clientRepository.existsByCode(request.getCode())){
-//            throw new RuntimeException("Client existed");
-//        }
-//
-//        client.setCode(request.getCode());
-//        client.setName(request.getName());
-//        client.setCountry(request.getCountry());
-//        client.setCity(request.getCity());
-//        client.setUnloco(request.getUnloco());
-//        client.setOffice_address(request.getOffice_address());
-//        client.setSuburb(request.getSuburb());
-//        client.setState(request.getState());
-//        client.setPostal_code(request.getPostal_code());
-//        client.setEmail(request.getEmail());
-//        client.setStatus(request.isStatus());
-//
-//        return clientRepository.save(client);
-//    }
+
     public Client createClient(Client client) {
         return clientRepository.save(client);
     }
@@ -47,6 +27,8 @@ public class ClientService {
     public Client getClientId(Long id){
         return clientRepository.findById(id).orElseThrow(()->new RuntimeException("Client with code " + id + " not found"));
     }
+// update
+
 // lọc theo từng chữ cái của name
     public List<Client> getClientsByName(String name){
         return clientRepository.findByNameContainingIgnoreCase(name);
@@ -57,12 +39,13 @@ public class ClientService {
     }
 // cập nhật thông tin client
 
-    public Client updateClient(String codeClient, ClientUpdateRequest request){
+    public Client updateClientByCode(String codeClient, Client request){
         Client client = getClient(codeClient);
 
         client.setUpdatedAt(LocalDateTime.now());
         client.setUpdatedBy(request.getUpdatedBy());
         client.setName(request.getName());
+        client.setBirthday(request.getBirthday());
         client.setCountry(request.getCountry());
         client.setCity(request.getCity());
         client.setUnloco(request.getUnloco());
@@ -76,12 +59,12 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public Client updateClient(Long idClient, ClientUpdateRequest request){
+    public Client updateClientById(Long idClient, Client request){
         Client client = getClientId(idClient);
-
         client.setUpdatedAt(LocalDateTime.now());
         client.setUpdatedBy(request.getUpdatedBy());
         client.setName(request.getName());
+        client.setBirthday(request.getBirthday());
         client.setCountry(request.getCountry());
         client.setCity(request.getCity());
         client.setUnloco(request.getUnloco());
@@ -94,7 +77,31 @@ public class ClientService {
 
         return clientRepository.save(client);
     }
+    //update nhiều client 1 lần bằng code
+    @Transactional
+    public void updateClientsByCode(List<Client> clients) {
+        for (Client client : clients) {
+            Optional<Client> existingClient = clientRepository.findByCode(client.getCode());
+            if (existingClient.isPresent()) {
+                Client updatedClient = existingClient.get();
+                updateClientByCode(updatedClient.getCode(),client);
+                clientRepository.save(updatedClient);
+            }
+        }
+    }
 
+    //update nhiều client 1 lần bằng ID
+    @Transactional
+    public void updateClientsById(List<Client> clients) {
+        for (Client client : clients) {
+            Optional<Client> existingClient = clientRepository.findById(client.getId());
+            if (existingClient.isPresent()) {
+                Client updatedClient = existingClient.get();
+                updateClientById(updatedClient.getId(),client);
+                clientRepository.save(updatedClient);
+            }
+        }
+    }
     //xóa
     public void deleteClient(String codeClient){
          clientRepository.deleteById(codeClient);

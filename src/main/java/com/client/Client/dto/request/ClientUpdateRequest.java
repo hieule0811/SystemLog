@@ -1,10 +1,13 @@
 package com.client.Client.dto.request;
 
+import java.util.Date;
+
 public class ClientUpdateRequest {
 
     private String updatedAt;
     private String updatedBy;
     private String name;
+    private Date birthday;
     private String country;
     private String city;
     private String unloco;
@@ -37,6 +40,14 @@ public class ClientUpdateRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getCountry() {
