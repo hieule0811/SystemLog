@@ -1,6 +1,7 @@
 
 CREATE TABLE client
-( 
+(
+    id int,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(30),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -17,7 +18,7 @@ CREATE TABLE client
     postal_code INT NOT NULL,
     email VARCHAR(30),
     status boolean NOT NULL
-) status boolean NOT NULL
+) ;
 
 CREATE TABLE activity_log(
     id SERIAL PRIMARY KEY,

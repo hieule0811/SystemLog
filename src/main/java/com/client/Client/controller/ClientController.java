@@ -2,6 +2,7 @@ package com.client.Client.controller;
 
 import com.client.Client.dto.request.ApiResponse;
 import com.client.Client.dto.request.ClientUpdateRequest;
+import com.client.Client.entity.ActivityLog;
 import com.client.Client.entity.Client;
 import com.client.Client.service.ActivityLogService;
 import com.client.Client.service.ClientService;
@@ -30,15 +31,21 @@ public class ClientController {
     }
     // xuất all client
     @GetMapping()
-    ResponseEntity<List<Client>> getAllClient(){
-        List <Client> client = clientService.getAllClient();
-        return ResponseEntity.ok(client);
+    ResponseEntity<ApiResponse<List<Client>>> getAllClient(){
+        List <Client> clients = clientService.getAllClient();
+        ApiResponse <List<Client>> apiResponse = new ApiResponse<>(true,"All clients",clients);
+        return ResponseEntity.ok(apiResponse);
     }
     // tìm kiếm
-        @GetMapping("/search/{name}")
-    ResponseEntity<List<Client>> getClientsByName (@PathVariable String name){
-        List <Client> client = clientService.getClientsByName(name);
-        return ResponseEntity.ok(client);
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<ApiResponse<List<Client>>> searchClients(@PathVariable String keyword) {
+        List<Client> clients = clientService.searchInAllColumns(keyword);
+        if (clients.isEmpty()) {
+            ApiResponse<List<Client>> apiResponse = new ApiResponse<>(false, "No clients found for the given keyword: " + keyword, null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
+        }
+        ApiResponse<List<Client>> apiResponse = new ApiResponse<>(true, "Clients found for the given keyword: " + keyword, clients);
+        return ResponseEntity.ok(apiResponse);
     }
 
     //xuất 1 client bằng code
@@ -56,29 +63,33 @@ public class ClientController {
 
     //update 1 client bằng code
     @PutMapping("/code/{codeClient}")
-    ResponseEntity<Client> updateClientByCode(@PathVariable ("codeClient") String codeClient, @RequestBody Client request){
+    ResponseEntity<ApiResponse<Client>> updateClientByCode(@PathVariable ("codeClient") String codeClient, @RequestBody Client request){
         Client client = clientService.updateClientByCode(codeClient,request);
-        return ResponseEntity.ok(client);
+        ApiResponse <Client> apiResponse = new ApiResponse<>(true,"Client with code " +codeClient+ " updated successfully",client);
+        return ResponseEntity.ok(apiResponse);
     }
     //update 1 client bằng id
     @PutMapping("/id/{idClient}")
-    ResponseEntity<Client> updateClientById(@PathVariable ("idClient") Long idClient, @RequestBody Client request){
+    ResponseEntity<ApiResponse<Client>>updateClientById(@PathVariable ("idClient") Long idClient, @RequestBody Client request){
         Client client = clientService.updateClientById(idClient,request);
-        return ResponseEntity.ok(client);
+        ApiResponse <Client> apiResponse = new ApiResponse<>(true,"Client with code " +idClient+ " updated successfully",client);
+        return ResponseEntity.ok(apiResponse);
     }
 
     // update nhiều client bằng code
     @PutMapping("/updateByCodes")
-    public ResponseEntity<String> updateClientsByCode(@RequestBody List<Client> clients) {
+    public ResponseEntity<ApiResponse<List<Client>>> updateClientsByCode(@RequestBody List<Client> clients) {
         clientService.updateClientsByCode(clients);
-        return ResponseEntity.ok("Clients updated successfully");
+        ApiResponse <List<Client>> apiResponse = new ApiResponse<>(true,"Clients updated successfully",clients);
+        return ResponseEntity.ok(apiResponse);
     }
 
     // update nhiều client bằng ID
-    @PutMapping("/updateById")
-    public ResponseEntity<String> updateClients(@RequestBody List<Client> clients) {
+    @PutMapping("/updateByIds")
+    public ResponseEntity<ApiResponse<List<Client>>> updateClients(@RequestBody List<Client> clients) {
         clientService.updateClientsById(clients);
-        return ResponseEntity.ok("Clients updated successfully");
+        ApiResponse <List<Client>> apiResponse = new ApiResponse<>(true,"Clients updated successfully",clients);
+        return ResponseEntity.ok(apiResponse);
     }
 
 
@@ -94,16 +105,17 @@ public class ClientController {
 
     //// delete client bằng id
     @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> deleteClient(@PathVariable Long id, @RequestHeader("editor") String editor) {
+    public ResponseEntity<ApiResponse<Client>> deleteClient(@PathVariable Long id, @RequestHeader("editor") String editor) {
         Client client = clientService.getClientId(id);
         clientService.deleteClientById(id);
         activityLogService.logDeleteAction(editor, client.toString());
-        return ResponseEntity.ok().body("Client deleted successfully!");
+        ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Client with id " + id + " deleted successfully", null);
+        return ResponseEntity.ok(apiResponse);
     }
 
     // delete nhiều client cùng 1 lúc bằng code
     @DeleteMapping("/codes")
-    public ResponseEntity<?> deleteClientsByCodes(@RequestBody List<String> codes,@RequestHeader("editor") String editor) {
+    public ResponseEntity<ApiResponse<Client>> deleteClientsByCodes(@RequestBody List<String> codes,@RequestHeader("editor") String editor) {
         List<Client> clients = clientService.FindClientsByCodes(codes);
 //        String dataOld = clients.stream()
 //                .map(client -> client.toString()) // Cần tạo phương thức toString() cho Client
@@ -116,18 +128,21 @@ public class ClientController {
             clientService.deleteClientsByCodes(codes);
 
         }
-        return ResponseEntity.ok("Clients deleted successfully");
+        ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Clients deleted successfully", null);
+        return ResponseEntity.ok(apiResponse);
+
     }
 
     // delete nhiều client cùng 1 lúc bằng id
     @DeleteMapping("/ids")
-    public ResponseEntity<?> deleteClientsById(@RequestBody List<Long> ids,@RequestHeader("editor") String editor) {
+    public ResponseEntity<ApiResponse<Client>> deleteClientsById(@RequestBody List<Long> ids,@RequestHeader("editor") String editor) {
         List<Client> clients = clientService.FindClientsByIds(ids);
         for (Client client : clients) {
             activityLogService.logDeleteAction(editor, client.toString());
             clientService.deleteClientsByIds(ids);
         }
-        return ResponseEntity.ok("Clients deleted successfully");
+        ApiResponse<Client> apiResponse = new ApiResponse<>(true, "Clients deleted successfully", null);
+        return ResponseEntity.ok(apiResponse);
     }
 
 }

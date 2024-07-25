@@ -17,6 +17,7 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog,String>
     void deleteByCreatedAtBetween(LocalDateTime startTime, LocalDateTime endTime);
     @Query("SELECT a FROM ActivityLog a WHERE " +
             "LOWER(a.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(a.updatedBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(a.eventSource) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(a.sourceCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(a.eventType) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

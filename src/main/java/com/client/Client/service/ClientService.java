@@ -1,6 +1,7 @@
 package com.client.Client.service;
 
 import com.client.Client.dto.request.ClientUpdateRequest;
+import com.client.Client.entity.ActivityLog;
 import com.client.Client.entity.Client;
 import com.client.Client.exception.ResourceNotFoundException;
 import com.client.Client.repository.ClientRepository;
@@ -27,7 +28,9 @@ public class ClientService {
     public Client getClientId(Long id){
         return clientRepository.findById(id).orElseThrow(()->new RuntimeException("Client with code " + id + " not found"));
     }
-// update
+    public List<Client> searchInAllColumns(String keyword) {
+        return clientRepository.searchInAllColumns(keyword);
+    }
 
 // lọc theo từng chữ cái của name
     public List<Client> getClientsByName(String name){
@@ -114,9 +117,6 @@ public class ClientService {
 
         // Xử lý xóa client
         clientRepository.delete(client);
-
-        // Ghi log nếu cần
-        // activityLogService.logClientDeletion(client);
     }
 
     @Transactional
