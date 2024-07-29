@@ -21,11 +21,34 @@ const SignUp = () => {
         <div className = {styles.setLayout}>
             <img src={apollogixLogo} style={{ marginTop: '50px', marginBottom: '20px' }} />
             <div className={styles.addUser}
-            style={{ width: '400px', marginTop: '0px' }}
+                 style={{ width: '400px', marginTop: '0px' }}
             >
                 <h3>Sign Up</h3>
                 <form className={styles.addUserForm} onSubmit={handleSubmit}>
                     <div className={styles.inputGroup}>
+                        <input
+                            id="ten_tk"
+                            name="ten_tk"
+                            autoComplete="off"
+                            placeholder="Username"
+                            required
+                        />
+                        <input
+                            type="password"
+                            id="mat_khau"
+                            name="mat_khau"
+                            autoComplete="off"
+                            placeholder="Password"
+                            required
+                        />
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            autoComplete="off"
+                            placeholder="Confirm your Password"
+                            required
+                        />
                         <input
                             type="email"
                             id="email"
@@ -35,29 +58,11 @@ const SignUp = () => {
                             required
                         />
                         <input
-                            type="text"
-                            id="phoneNumber"
+                            id="phone_number"
                             pattern="^(\[ ]*((\+|)[0-9 ]+\)|)[0-9 ]+$"
-                            name="phoneNumber"
+                            name="phone_number"
                             autoComplete="off"
                             placeholder="Phone Number"
-                            required
-                        />
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            autoComplete="off"
-                            placeholder="Password"
-                            required
-                        />
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            autoComplete="off"
-                            placeholder="Confirm your Password"
-                            required
                         />
                         <label htmlFor="rememberMe">
                             <input
@@ -69,8 +74,8 @@ const SignUp = () => {
                             />
                             I accept the terms and conditions of use.
                         </label>
-                        <button type="submit"           className={`${styles.btn} ${styles['btn-success']}`}
-                        style = {{marginBottom: '10px'}}
+                        <button type="submit" className={`${styles.btn} ${styles['btn-success']}`}
+                                style={{marginBottom: '10px'}}
                         >
                             Sign Up
                         </button>
@@ -78,7 +83,7 @@ const SignUp = () => {
                 </form>
                 <div className="signin">
                     <Link to="/"
-                    className={`${styles.btn} ${styles['btn-success']}`}
+                          className={`${styles.btn} ${styles['btn-success']}`}
                     >
                         <p>Already have an Account? Sign In Here</p>
                     </Link>
@@ -90,9 +95,9 @@ const SignUp = () => {
 
 function App(){
     return(
-      <React.Fragment>
-        <SignUp/>
-      </React.Fragment>
+        <React.Fragment>
+            <SignUp/>
+        </React.Fragment>
     )
-  }
+}
 export default App;

@@ -33,9 +33,9 @@
 .test{
   display:flex;
   position: absolute;
-  top: 0; /* Đặt phần tử ở giữa theo chiều dọc */
-  left: 50%; /* Đặt phần tử ở giữa theo chiều ngang */
-  transform: translate(-50%); /* Dịch chuyển phần tử điều chỉnh để nằm chính giữa */
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
 }
 .test1{
   position: absolute;
@@ -45,21 +45,23 @@
 }
 
 .iconButton {
-  margin-top:27px;
+  margin-top:30px;
   margin-left:10px;
-  width: 80px;  /* Chỉnh chiều rộng */
-  height: 35px; /* Chỉnh chiều cao */
+  // width: 80px;
+  // height: 35px;
+  height:30px;
+  width:30px;
   padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center; /* Tùy chọn: Làm cho button thành hình tròn */
+  justify-content: center;
   background-color: #13a89e;
   border: none;
   border-radius: 5px;
   color:white;
 }
 .customFil{
-  font-size:23px;
+  font-size:20px;
   color:white;
 }
 .systemlogList{
@@ -87,7 +89,7 @@
 }
 .systemlogAva2{
   font-size: 40px;
-  margin-top:-20px;
+  margin-top:-18px;
 }
 .systemlogBottom{
   margin-left: 15px;
@@ -96,4 +98,21 @@
   height:80%;
   border-radius :5px;
   background-color: white;
+}
+.addDelete{
+  margin-left:10px;
+  margin-top:30px;
+  border-radius:5px;
+  width:30px;
+  height:30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:0;
+  border:none;
+  background-color: #13a89e;
+  color:white;
+}
+.customDelete{
+  font-size: 20px;
 }

@@ -12,14 +12,42 @@
     border-spacing: 0;
     table-layout: fixed;
     td {
-      overflow: hidden; // Ẩn nội dung bị tràn ra khỏi khung của ô
-      text-overflow: ellipsis; // Hiển thị dấu ba chấm khi nội dung bị tràn
+      padding: 8px;
+      max-width: 200px;
+        overflow: hidden; // Ẩn nội dung bị tràn ra khỏi khung của ô
+        text-overflow: ellipsis; // Hiển thị dấu ba chấm khi nội dung bị tràn
+       white-space: nowrap;
     }
     thead tr:first-child {
       position: sticky;
       top: 0;
     }
+    border-collapse: collapse;
   }
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 .pagination {
@@ -72,4 +100,3 @@
     color: #ffffff;
   }
 }
-

@@ -1,0 +1,89 @@
+.clientContainer{
+  // margin-left: 20px;
+  margin-top:10px;
+  // width:calc(100vw - 20px);
+  width:85%;
+  height:calc(100vh - 10px);
+  position: relative;
+}
+.textTitle{
+  font-size:18px;
+  font-weight:500;
+  position:absolute;
+  top: 80px;
+  left: 10px;
+  hr{
+    width:100%;
+  }
+}
+.clientTop{
+  background-color: white;
+  margin-bottom:10px;
+  margin-left:15px;
+  border-radius: 5px;
+  width:98%;
+  height:15%;
+  position: relative;
+  hr{
+    width:100%;
+    position:absolute;
+    top:55px;
+  }
+}
+.test1{
+  position: absolute;
+  top: 25px;
+  right: 0;
+  display:flex;
+}
+
+.clientList{
+  list-style-type: none;
+  display:inline-flex;
+  padding:0;
+  li{
+    margin-right:20px;
+    font-size: 20px;
+  }
+}
+.clientAva{
+  display:flex;
+  padding-left:5px;
+  padding-right:5px;
+  &:hover{
+    cursor:pointer;
+    background-color: #f1f1f1;
+    border-radius:5px;
+  }
+}
+.clientAva1{
+  font-size: 15px;
+  margin-top:5px;
+}
+.clientAva2{
+  font-size: 40px;
+  margin-top:-18px;
+}
+.newClient {
+  background-color: white;
+  width: 98%;
+  margin-left: 15px;
+  padding: 40px;
+  border-radius: 10px;
+}
+.newClient .inputGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.newClient .inputGroup label {
+  margin-top: 10px;
+}
+
+.newClient .inputGroup input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import Sidebar from '../Components/Sidebar.js';
 import styles from '../Styles/Client.module.scss';
@@ -11,15 +11,28 @@ import { FaTrash } from 'react-icons/fa';
 import { IoIosAdd } from "react-icons/io";
 import { FiLogOut } from 'react-icons/fi';
 import Table from '../Components/Table.js';
+import { useParams } from 'react-router-dom';
 import {headerData, bodyData} from '../Common/utils.js';
 import { Menu, MenuItem } from '@mui/material';
+import { FaTimes } from 'react-icons/fa';
 const operatorOptions = {
-  column1: ['equals', 'not equals', 'contains', 'does not contain'],
-  column2: ['greater than', 'less than', 'equals', 'not equals'],
-  column3: ['starts with', 'ends with', 'includes', 'excludes']
+  code: ['contains','starts with', 'ends with'],
+  name: ['contains','starts with', 'ends with'],
+  birthdate: ['contains','starts with', 'ends with'],
+  country: ['contains','starts with', 'ends with'],
+  city: ['contains','starts with', 'ends with'],
+  unloco: ['contains','starts with', 'ends with'],
+  office_address: ['contains','starts with', 'ends with'],
+  suburb: ['contains','starts with', 'ends with'],
+  state: ['contains','starts with', 'ends with'],
+  postal_code: ['contains','starts with', 'ends with'],
+  telephone: ['contains','starts with', 'ends with'],
+  email: ['contains','starts with', 'ends with'],
+  status: ['contains','starts with', 'ends with']
 };
 
-const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFilter, removeFilter }) => (
+const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFilter, removeFilter, handleSubmit }) => (
+
   <Modal show={show} onHide={handleClose} backdrop={false}>
     <Modal.Header closeButton>
       <Modal.Title>Filter</Modal.Title>
@@ -33,6 +46,20 @@ const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFil
             onChange={e => handleFilterChange(index, 'column', e.target.value)}
           >
             <option value="">Column</option>
+            <option value="code">Code</option>
+            <option value="name">Name</option>
+            <option value="birthdate">Birthdate</option>
+            <option value="country">Country</option>
+            <option value="city">City</option>
+            <option value="unloco">UNLOCO</option>
+            <option value="office_address">Office Address</option>
+            <option value="suburb">Suburb</option>
+            <option value="state">State</option>
+            <option value="postal_code">Postal Code</option>
+            <option value="telephone">Telephone</option>
+            <option value="email">Email</option>
+            <option value="status">Status</option>
+            {/* <option value="">Column</option>
             <option value="column1">Column 1</option>
             <option value="column2">Column 2</option>
             <option value="column3">Column 3</option>
@@ -42,7 +69,7 @@ const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFil
             <option value="column7">Column 7</option>
             <option value="column8">Column 8</option>
             <option value="column9">Column 9</option>
-            <option value="column10">Column 10</option>
+            <option value="column10">Column 10</option> */}
           </FormControl>
           <FormControl
             as="select"
@@ -73,19 +100,93 @@ const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFil
       <Button variant="danger" onClick={handleClose}>
         CLEAR
       </Button>
-      <Button variant="success" onClick={handleClose}>
+      <Button variant="success" onClick={handleSubmit}>
         SUBMIT
       </Button>
     </Modal.Footer>
   </Modal>
 );
-
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+};
+const formatDateBack = (dateString) => {
+  const [day,month,year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
+};
 const Client = () =>{
   const columns = headerData;
-  const data = bodyData;
+  const [bodyData,setBodyData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterData, setFilterData] = useState([]);
+  const { username } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/client');
+        const data = await response.json();
+        const formattedData = data.map(item => ({
+          code: item.code,
+          name: item.name,
+          birthdate: formatDate(item.birthdate),
+          country: item.country,
+          city: item.city,
+          unloco: item.unloco,
+          office_address: item.officeAddress,
+          suburb: item.suburb,
+          state: item.state,
+          postal_code: item.postalCode,
+          telephone: item.telephone,
+          email: item.email,
+          status: item.status ? 'Active' : 'Inactive'
+        }));
+        setBodyData(formattedData);
+        setFilterData(formattedData); // Set initial filterData to bodyData
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (searchQuery.trim() !== '') {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`http://localhost:8080/client/search?keyword=${searchQuery}`);
+          const data = await response.json();
+          const formattedData = data.map(item => ({
+            code: item.code,
+            name: item.name,
+            birthdate: formatDate(item.birthdate),
+            country: item.country,
+            city: item.city,
+            unloco: item.unloco,
+            office_address: item.officeAddress,
+            suburb: item.suburb,
+            state: item.state,
+            postal_code: item.postalCode,
+            telephone: item.telephone,
+            email: item.email,
+            status: item.status ? 'Active' : 'Inactive'
+          }));
+          setFilterData(formattedData);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
+    } else {
+      setFilterData(bodyData);
+    }
+  }, [searchQuery, bodyData]);
+  const data = filterData;
   const [show, setShow] = useState(false);
   const [filters, setFilters] = useState([]);
-
+  const [showRemoveFilterButton, setShowRemoveFilterButton] = useState(false);
   const handleClose = () => {
     setFilters([]);
     setShow(false);
@@ -109,6 +210,7 @@ const Client = () =>{
   };
   const [anchorEl, setAnchorEl] = useState(null);
 
+
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
@@ -120,14 +222,68 @@ const Client = () =>{
   const handleLogout = () => {
     handleClose();
   };
+  const handleSubmit = async () => {
+    const formattedFilters = filters.map(filter => {
+      if(filter.column === 'birthdate') {
+        return {
+          ...filter,
+          data: formatDateBack(filter.data)
+        };
+      }
+      return filter;
+    });
+    console.log(formattedFilters);
+    try {
+      const response = await fetch ('http://localhost:8080/client/filter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedFilters),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log(data)
+      const formattedData = data.map(item => {
+        return {
+          ...item,
+          birthdate: item.birthdate ? formatDate(item.birthdate) : '',
+          status: item.status ? 'Active' : 'Inactive',
+          postal_code: item.postalCode,
+          office_address: item.officeAddress
+        };
+      });
+      console.log(formattedData);
+      setShowRemoveFilterButton(true);
+      setFilterData(formattedData);
+      handleClose();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  const handleRemoveFilters = () => {
+    setFilterData(bodyData);
+    setFilters([]);
+    setShowRemoveFilterButton(false); // Hide the "Remove Filter" button
+  };
+
   return(
     <div className = {styles.clientContainer}>
       <div className = {styles.clientTop}>
         <hr></hr>
         <div className = {styles.textTitle}>
           Clients
+
         </div>
+        {showRemoveFilterButton && (
+            <Button variant="outline-danger" onClick={handleRemoveFilters} style={{ marginLeft: '320px', marginTop:'25px',textAlign:'center',justifyContent:'center'}}>
+              <FaTimes /> Remove
+            </Button>
+        )}
         <div className = {styles.test}>
+
             <Form className="d-flex justify-content-center align-items-center"
             style = {{ marginTop:'25px' }}
             >
@@ -137,6 +293,8 @@ const Client = () =>{
                   type="text"
                   placeholder="Search Anything Here..."
                   aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Button style = {{backgroundColor:'#13a89e'}} size="md">Search</Button>
               </InputGroup>
@@ -147,11 +305,12 @@ const Client = () =>{
             <button className = {styles.iconButton} onClick={handleShow}>
               <CiFilter className = {styles.customFil}/> FILTER
             </button>
-            <Link to = "/client/insert">
+            <Link to = {`/client/insert`}>
             <button className = {styles.addButton}>
               <IoIosAdd className = {styles.customAdd}/>
             </button>
             </Link>
+
             <ModalComponent
               show={show}
               handleClose={handleClose}
@@ -159,7 +318,9 @@ const Client = () =>{
               handleFilterChange={handleFilterChange}
               addFilter={addFilter}
               removeFilter={removeFilter}
+              handleSubmit={handleSubmit}
             />
+
         </div>
         <div className = {styles.test1}>
           <ul className = {styles.clientList}>
@@ -187,8 +348,8 @@ const Client = () =>{
       </div>
       <div className = {styles.clientBottom}>
           <Table columns = {columns} data = {data}/>
-
       </div>
+
     </div>
   )
 }
