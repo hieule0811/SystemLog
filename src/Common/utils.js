@@ -142,10 +142,10 @@ export const ActionMenu = ({row, onDelete}) => {
       case 'delete':
         setShowConfirm(true);
         break;
-      case 'updateMany':
-        break;
-      case 'deleteMany':
-       break;
+      // case 'updateMany':
+      //   break;
+      // case 'deleteMany':
+      //  break;
       default:
         break;
     }
@@ -200,14 +200,14 @@ export const ActionMenu = ({row, onDelete}) => {
       <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
       Delete
       </MenuItem>
-      <MenuItem onClick={() => handleMenuClick('updateMany')}>
+      {/* <MenuItem onClick={() => handleMenuClick('updateMany')}>
           <FaEdit style={{ color: 'green', marginRight: '10px', fontSize: '15px' }} />
           Update Many
         </MenuItem>
         <MenuItem onClick={() => handleMenuClick('deleteMany')}>
           <FaTrash style={{ color: 'orange', marginRight: '10px', fontSize: '15px' }} />
           Delete Many
-      </MenuItem>
+      </MenuItem> */}
     </Menu>
     {showConfirm && (
         <div style={{
