@@ -16,9 +16,14 @@ const Sidebar = () => {
     const storedValue = sessionStorage.getItem('isMenuOpen');
     return storedValue ? JSON.parse(storedValue) : false;
   });
+  const [tentk, setTentk] = useState('');
 
   // Cập nhật giá trị isMenuOpen vào sessionStorage
   useEffect(() => {
+    const storedTentk = localStorage.getItem('tentk');
+    if (storedTentk) {
+      setTentk(storedTentk);
+    }
     sessionStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
   }, [isMenuOpen]);
 
@@ -98,7 +103,7 @@ const Sidebar = () => {
               <li className={styles.SidebarAvatar}>
                 <RxAvatar className={styles.SidebarAva} />
                 <div className={styles.SidebarName}>
-                  TrungHieu
+                  {tentk}
                 </div>
               </li>
               <li>

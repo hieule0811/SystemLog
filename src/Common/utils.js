@@ -145,7 +145,7 @@ export const ActionMenu = ({row, onDelete}) => {
       case 'updateMany':
         break;
       case 'deleteMany':
-        break;
+       break;
       default:
         break;
     }

@@ -8,22 +8,7 @@ import {Link, useParams} from "react-router-dom";
 import {FiLogOut} from "react-icons/fi";
 import { Modal, Button } from 'react-bootstrap';
 export const UpdatePage = () => {
-    // const [show, setShow] = useState(false);
-    // const [filters, setFilters] = useState([]);
-    // const {username} = useParams();
-    // const [name, setName] = useState("B-G FENCING WHOLESALE");
-    // const [email, setEmail] = useState("");
-    // const [country, setCountry] = useState("Australia");
-    // const [city, setCity] = useState("Sydney");
-    // const unLoco = "AUSYD";
-    // const [suburb, setSuburb] = useState("Wetherill Park");
-    // const state = "New South Wales";
-    // const [officeAddress, setOfficeAddress] = useState("123 Main St");
-    // const [postalCode, setPostalCode] = useState(2164);
-    // const createdBy = "user1";
-    // const createdAt = "20/07/2024 14:24";
-    // const updatedAt = "23/07/2024 15:33"
-    // const [birthdate, setBirthdate] = useState(new Date(2001, 10, 1));
+
     const { username } = useParams();
     const [client,setClient] = useState([]);
     const [show, setShow] = useState(false);
@@ -44,8 +29,30 @@ export const UpdatePage = () => {
     const [updatedAt, setUpdateAt] = useState('');
     const [createdBy, setCreatedBy] = useState('');
     const [createdAt, setCreatedAt] = useState('');
+    const [postalCodeError, setPostalCodeError] = useState('');
     const [modalShow, setModalShow] = useState(false);
+    const [tentk, setTentk] = useState('');
+    const hasDataChanged = () => {
+        return (
+          name !== client.name ||
+          email !== client.email ||
+          country !== client.country ||
+          city !== client.city ||
+          unloco !== client.unloco ||
+          suburb !== client.suburb ||
+          state !== client.state ||
+          status !== client.status ||
+          officeAddress !== client.officeAddress ||
+          postalCode !== client.postalCode ||
+          birthdate !== client.birthdate ||
+          telephone !== client.telephone
+        );
+    };
     useEffect(() => {
+        const storedTentk = localStorage.getItem('tentk');
+        if (storedTentk) {
+            setTentk(storedTentk);
+        }
         const fetchClient = async () => {
             try {
                 const response = await fetch(`http://localhost:8080/client/code?code=${username}`);
@@ -122,6 +129,14 @@ const formatDate = (dateString) => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!hasDataChanged()) {
+            alert("No changes have been made");
+            return;
+        }
+        if (!/^\d+$/.test(postalCode)) {
+            setPostalCodeError('Postal code must be a number');
+            return;
+        }
         setModalShow(true);
     };
     const handleModalClose = () => setModalShow(false);
@@ -180,7 +195,7 @@ const formatDate = (dateString) => {
                         <li><LuBellRing/></li>
                         <li>
                             <div className={styles.clientAva} onClick={handleClick}>
-                                <div className={styles.clientAva1}>TrungHieu</div>
+                                <div className={styles.clientAva1}>{tentk}  </div>
                                 <div className={styles.clientAva2}><RxAvatar/></div>
                                 <Menu
                                     anchorEl={anchorEl}
@@ -300,12 +315,17 @@ const formatDate = (dateString) => {
                         <br/><br/>
                         <label htmlFor="postal_code">Postal Code</label>
                         <input
-                            style={{width: '375px', marginLeft: '5px'}}
+                            style={{width: '375px', marginLeft: '5px', position: 'relative'}}
                             id="postal_code"
                             name="postal_code"
                             autoComplete="off"
                             value={postalCode}
-                            onChange={(e) => setPostalCode(e.target.value)}/>
+                            onChange={(e) => {
+                                setPostalCode(e.target.value);
+                                setPostalCodeError('');
+                            }}
+                        />
+                        {postalCodeError && <div style={{marginLeft:'90px',color: 'red',position:'absolute' }}>{postalCodeError}</div>}
                         <label htmlFor="birthdate" style={{marginLeft: '20px'}}>Birthdate</label>
                         <input
                             style={{width: '375px', marginLeft: '5px', backgroundColor: 'lightgrey'}}
@@ -323,7 +343,7 @@ const formatDate = (dateString) => {
                             id="created_by"
                             name="created_by"
                             autoComplete="off"
-                            value={createdBy}
+                            value= {createdBy}
                             readOnly/>
                         <label htmlFor="created_at" style={{marginLeft: '20px'}}>Created At</label>
                         <input
@@ -340,7 +360,7 @@ const formatDate = (dateString) => {
                             id="updated_by"
                             name="updated_by"
                             autoComplete="off"
-                            value={updatedBy}
+                            value={tentk}
                             readOnly/>
                         <label htmlFor="updated_at" style={{marginLeft: '20px'}}>Updated At</label>
                         <input

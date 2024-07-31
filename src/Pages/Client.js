@@ -18,17 +18,17 @@ import { FaTimes } from 'react-icons/fa';
 const operatorOptions = {
   code: ['contains','starts with', 'ends with'],
   name: ['contains','starts with', 'ends with'],
-  birthdate: ['contains','starts with', 'ends with'],
+  birthdate: ['contains'],
   country: ['contains','starts with', 'ends with'],
   city: ['contains','starts with', 'ends with'],
   unloco: ['contains','starts with', 'ends with'],
-  office_address: ['contains','starts with', 'ends with'],
+  officeAddress: ['contains','starts with', 'ends with'],
   suburb: ['contains','starts with', 'ends with'],
   state: ['contains','starts with', 'ends with'],
-  postal_code: ['contains','starts with', 'ends with'],
+  postalCode: ['contains','starts with', 'ends with'],
   telephone: ['contains','starts with', 'ends with'],
   email: ['contains','starts with', 'ends with'],
-  status: ['contains','starts with', 'ends with']
+  status: ['contains']
 };
 
 const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFilter, removeFilter, handleSubmit }) => (
@@ -52,10 +52,10 @@ const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFil
             <option value="country">Country</option>
             <option value="city">City</option>
             <option value="unloco">UNLOCO</option>
-            <option value="office_address">Office Address</option>
+            <option value="officeAddress">Office Address</option>
             <option value="suburb">Suburb</option>
             <option value="state">State</option>
-            <option value="postal_code">Postal Code</option>
+            <option value="postalCode">Postal Code</option>
             <option value="telephone">Telephone</option>
             <option value="email">Email</option>
             <option value="status">Status</option>
@@ -122,8 +122,12 @@ const Client = () =>{
   const [bodyData,setBodyData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterData, setFilterData] = useState([]);
-  const { username } = useParams();
+  const [tentk, setTentk] = useState('');
   useEffect(() => {
+    const storedTentk = localStorage.getItem('tentk');
+    if (storedTentk) {
+      setTentk(storedTentk);
+    }
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8080/client');
@@ -245,7 +249,6 @@ const Client = () =>{
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log(data)
       const formattedData = data.map(item => {
         return {
           ...item,
@@ -255,7 +258,6 @@ const Client = () =>{
           office_address: item.officeAddress
         };
       });
-      console.log(formattedData);
       setShowRemoveFilterButton(true);
       setFilterData(formattedData);
       handleClose();
@@ -327,7 +329,7 @@ const Client = () =>{
             <li><LuBellRing /></li>
             <li>
               <div className = {styles.clientAva} onClick={handleClick}>
-                <div className = {styles.clientAva1}>TrungHieu</div>
+                <div className = {styles.clientAva1}>{tentk}</div>
                 <div className = {styles.clientAva2}><RxAvatar/></div>
                 <Menu
                   anchorEl={anchorEl}

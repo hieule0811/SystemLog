@@ -242,7 +242,12 @@ const SystemLogPage = () =>{
       console.error('Error fetching data:', error);
     }
   };
+  const [tentk, setTentk] = useState('');
   useEffect(() => {
+    const storedTentk = localStorage.getItem('tentk');
+    if (storedTentk) {
+      setTentk(storedTentk);
+    }
     if (searchQuery.trim() !== '') {
       const fetchData = async () => {
         try {
@@ -478,7 +483,7 @@ const SystemLogPage = () =>{
             <li><LuBellRing /></li>
             <li>
               <div className = {styles.systemlogAva} onClick  = {handleClick}>
-                <div className = {styles.systemlogAva1}>TrungHieu</div>
+                <div className = {styles.systemlogAva1}>{tentk}</div>
                 <div className = {styles.systemlogAva2}><RxAvatar/></div>
                 <Menu
                   anchorEl={anchorEl}

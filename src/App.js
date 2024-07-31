@@ -22,9 +22,11 @@ function App() {
           <Route path= '/forgot-password' element = {<ForgotPassword/>}/>
           <Route path = '/sign-up' element = {<SignUp/>}/>
           <Route path = '/client' element = {<Client/>}/>
+          <Route path = '/client/:username' element = {<Client/>}/>
           <Route path = '/systemlog' element = {<SystemLogPage/>}/>
           <Route path = '/systemlog/:username' element = {<SystemLogPage/>}/>
           <Route path = '/client/insert' element = {<InsertPage/>}/>
+          <Route path = '/client/insert/:username' element = {<InsertPage/>}/>
           <Route path = '/client/update' element = {<UpdatePage/>}/>
           <Route path = '/client/update/:username' element = {<UpdatePage/>}/>
       </Routes>

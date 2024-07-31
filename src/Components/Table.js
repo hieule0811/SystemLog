@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import styles from './Table.module.scss';
 
@@ -26,7 +26,13 @@ const Table = ({ columns, data }) => {
         useSortBy,
         usePagination
     );
-
+    const [tentk, setTentk] = useState('');
+    useEffect(() => {
+        const storedTentk = localStorage.getItem('tentk');
+        if (storedTentk) {
+            setTentk(storedTentk);
+        }
+    }, []);
     return (
         <>
             <div className={styles.setSizeTable}>
@@ -61,7 +67,7 @@ const Table = ({ columns, data }) => {
                                             }}
 
                                         >
-                                            {cellValue}
+                                            {cell.value == 'postgres' ? tentk : cellValue}
 
                                         </td>
                                     );

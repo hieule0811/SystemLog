@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import styles from "../Styles/SignIn.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apollogixLogo from '../images/Apollogix-logo.jpg'
+import axios from 'axios';
 
 const SignIn = () => {
     /* If user inputs username and/or password that cannot be found on database, an error will be alerted. This will be coded in JavaScript later. */
@@ -12,15 +13,18 @@ const SignIn = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError(""); // Clear any previous errors
-        // *** Assume this sign-in is successful (without using database)
-        // const result = await response.json();
-        // localStorage.setItem('authToken', result.token);
-        // localStorage.setItem('username', result.username);
-        const username = "QuangNha";
-        localStorage.setItem('name', username);
-        // Redirect to dashboard or another protected route
-        history(`/client/${username}`);
+        try {
+            const response = await axios.post('http://localhost:8080/api/login', {
+                email: email,
+                matkhau: password
+            });
+            const { email: userEmail, tentk, matkhau } = response.data;
+            localStorage.setItem('tentk', tentk);
+            localStorage.setItem('email', userEmail);
+            history(`/client/${tentk}`);
+        } catch (error) {
+            alert('Invalid username or password');
+        }
     };
 
     return (
@@ -36,6 +40,8 @@ const SignIn = () => {
                             name="email"
                             autoComplete="off"
                             placeholder="Email"
+                            value = {email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required/>
                         <input
                             type="password"
@@ -43,6 +49,8 @@ const SignIn = () => {
                             name="password"
                             autoComplete="off"
                             placeholder="Password"
+                            value = {password}
+                            onChange={(e) => setPassword(e.target.value)}
                             required/>
                         <div className="Forget-password">
                             <Link to="/forgot-password" type="submit" className={`${styles.btn} ${styles['btn-success']}`}
@@ -50,6 +58,7 @@ const SignIn = () => {
                                 Forgot your password?
                             </Link>
                         </div>
+                        {error && <div style={{ color: 'red' }}>{error}</div>}
                         <button type="submit" className="btn btn-primary" style = {{marginBottom: '10px' }}>
                             SIGN IN
                         </button>

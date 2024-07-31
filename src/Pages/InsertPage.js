@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Sidebar from '../Components/Sidebar.js';
 import styles from '../Styles/InsertPage.module.scss';
 import {LuBellRing} from "react-icons/lu";
@@ -10,8 +10,6 @@ import { Modal, Button } from 'react-bootstrap';
 export const InsertPage = () => {
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState([]);
-    const { username } = useParams();
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [country, setCountry] = useState('');
@@ -24,10 +22,16 @@ export const InsertPage = () => {
     const [postalCode, setPostalCode] = useState('');
     const [birthdate, setBirthdate] = useState('');
     const [telephone, setTelephone] = useState('');
-    const createdBy = "TrungHieu";
-    const updatedBy = "TrungHieu";
+    const [postalCodeError, setPostalCodeError] = useState('');
     const [modalShow, setModalShow] = useState(false);
-
+    const [tentk, setTentk] = useState('');
+    useEffect(() => {
+        const storedTentk = localStorage.getItem('tentk');
+        if (storedTentk) {
+            setTentk(storedTentk);
+        }
+    }, []);
+    const createdBy = tentk, updatedBy = tentk;
     const handleClose = () => {
         setFilters([]);
         setShow(false);
@@ -64,6 +68,10 @@ export const InsertPage = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!/^\d+$/.test(postalCode)) {
+            setPostalCodeError('Postal code must be a number');
+            return;
+        }
         setModalShow(true); // Hiển thị modal khi nhấn SAVE
     };
     const handleModalClose = () => setModalShow(false);
@@ -135,7 +143,7 @@ export const InsertPage = () => {
                         <li><LuBellRing/></li>
                         <li>
                             <div className={styles.clientAva} onClick={handleClick}>
-                                <div className={styles.clientAva1}>TrungHieu</div>
+                                <div className={styles.clientAva1}>{tentk}</div>
                                 <div className={styles.clientAva2}><RxAvatar/></div>
                                 <Menu
                                     anchorEl={anchorEl}
@@ -246,14 +254,18 @@ export const InsertPage = () => {
                             onChange={(e) => setOfficeAddress(e.target.value)}
                             required/>
                         <input
-                            style={{width: '375px', marginLeft: '20px'}}
+                            style={{width: '375px', marginLeft: '20px', postion: 'relative'}}
                             id="postal_code"
                             name="postal_code"
                             autoComplete="off"
                             placeholder="Postal Code*"
                             value={postalCode}
-                            onChange={(e) => setPostalCode(e.target.value)}
+                            onChange={(e) => {
+                                setPostalCode(e.target.value);
+                                setPostalCodeError('');
+                            }}
                             required/>
+                        {postalCodeError && <div style={{marginLeft:'620px',color: 'red',position:'absolute' }}>{postalCodeError}</div>}
                         <br/><br/>
                         <input
                             id="birthdate"
@@ -280,7 +292,7 @@ export const InsertPage = () => {
                             id="created_by"
                             name="created_by"
                             autoComplete="off"
-                            value={"Trung Hiu"}
+                            value={tentk}
                             readOnly/>
 
                         <br/><br/>
