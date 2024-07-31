@@ -73,7 +73,7 @@ public class ClientRepositoryCustomImpl implements ClientRepositoryCustom {
 
             if (column != null && operator != null && data != null) {
                 if ("birthdate".equals(column)) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     LocalDate date = LocalDate.parse(data, formatter);
 
                     switch (operator) {
@@ -89,25 +89,28 @@ public class ClientRepositoryCustomImpl implements ClientRepositoryCustom {
                         default:
                             throw new IllegalArgumentException("Operator không hợp lệ: " + operator);
                     }
-//                    Expression<String> dateAsString = cb.function("TO_CHAR", String.class, root.get(column), cb.literal("yyyy-MM-dd"));
-//
-//                    switch (operator) {
-//                        case "contains":
-//                            // Sử dụng LIKE để tìm kiếm chuỗi con
-//                            predicate = cb.and(predicate, cb.like(dateAsString, "%" + data + "%"));
-//                            break;
-//                        case "starts with":
-//                            // Sử dụng LIKE để tìm kiếm bắt đầu bằng
-//                            predicate = cb.and(predicate, cb.like(dateAsString, data + "%"));
-//                            break;
-//                        case "ends with":
-//                            // Sử dụng LIKE để tìm kiếm kết thúc bằng
-//                            predicate = cb.and(predicate, cb.like(dateAsString, "%" + data));
-//                            break;
-//                        default:
-//                            throw new IllegalArgumentException("Operator không hợp lệ: " + operator);
-//                    }
-                } else {
+                }
+                else if ("postalCode".equals(column)) {
+                    String postalCode = data;
+                    switch (operator) {
+                        case "contains":
+                            predicate = cb.and(predicate, cb.like(cb.toString(root.get(column)), "%" + postalCode + "%"));
+                            break;
+                        case "starts with":
+                            predicate = cb.and(predicate, cb.like(cb.toString(root.get(column)), postalCode + "%"));
+                            break;
+                        case "ends with":
+                            predicate = cb.and(predicate, cb.like(cb.toString(root.get(column)), "%" + postalCode));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Operator không hợp lệ: " + operator);
+                    }
+                }
+                else if ("status".equals(column)) {
+                    Boolean status = "Active".equalsIgnoreCase(data); // Chuyển đổi chuỗi thành boolean
+                    predicate = cb.and(predicate, cb.equal(root.get(column), status));
+                }
+                else {
                     switch (operator) {
                         case "contains":
                             predicate = cb.and(predicate, cb.like(cb.lower(root.get(column)), "%" + data.toLowerCase() + "%"));
