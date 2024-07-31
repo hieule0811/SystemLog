@@ -26,13 +26,13 @@ const Table = ({ columns, data }) => {
         useSortBy,
         usePagination
     );
-    const [tentk, setTentk] = useState('');
-    useEffect(() => {
-        const storedTentk = localStorage.getItem('tentk');
-        if (storedTentk) {
-            setTentk(storedTentk);
-        }
-    }, []);
+    // const [tentk, setTentk] = useState('');
+    // useEffect(() => {
+    //     const storedTentk = localStorage.getItem('tentk');
+    //     if (storedTentk) {
+    //         setTentk(storedTentk);
+    //     }
+    // }, []);
     return (
         <>
             <div className={styles.setSizeTable}>
@@ -67,8 +67,8 @@ const Table = ({ columns, data }) => {
                                             }}
 
                                         >
-                                            {cell.value == 'postgres' ? tentk : cellValue}
-
+                                            {/* {cell.value == 'postgres' ? tentk : cellValue} */}
+                                            {cellValue}
                                         </td>
                                     );
                                 })}

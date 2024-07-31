@@ -74,7 +74,7 @@ export const UpdatePage = () => {
                 setBirthdate(data.birthdate);
                 setTelephone(data.telephone);
                 setUpdatedBy(data.updatedBy);
-                setUpdateAt(formatDate(data.updatedAt));
+                if(data.updatedAt !== null) setUpdateAt(formatDate(data.updatedAt));
                 setCreatedBy(data.createdBy);
                 setCreatedAt(formatDate(data.createdAt));
             } catch (error) {
@@ -156,6 +156,7 @@ const formatDate = (dateString) => {
           email,
           telephone,
           status: status === true,
+          updatedBy: tentk
         };
 
         fetch(`http://localhost:8080/client/code/${username}`, {
@@ -175,6 +176,7 @@ const formatDate = (dateString) => {
          )
         .then(data => {
             alert(data);
+            window.location.reload();
 
         })
         .catch((error) => {
@@ -360,7 +362,7 @@ const formatDate = (dateString) => {
                             id="updated_by"
                             name="updated_by"
                             autoComplete="off"
-                            value={tentk}
+                            value={updatedBy}
                             readOnly/>
                         <label htmlFor="updated_at" style={{marginLeft: '20px'}}>Updated At</label>
                         <input

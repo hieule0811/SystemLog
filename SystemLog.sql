@@ -104,7 +104,7 @@ BEGIN
 		changed_columns:=left(changed_columns, length(changed_columns) - 2);
 		old_data:=left(old_data, length(old_data) - 2);
 		insert into activity_log(event_time,created_by,event_source,source_code, event_type,changed_data,data_old,data_new,client_id)
-		SELECT now(), user,'CLIENT',OLD.name,'DELETE',changed_columns,old_data,new_data,null;
+		SELECT now(), OLD.updated_by,'CLIENT',OLD.name,'DELETE',changed_columns,old_data,new_data,null;
         RETURN OLD;
     ELSIF (TG_OP = 'UPDATE') THEN
 		changed_columns:='';
@@ -135,7 +135,7 @@ BEGIN
 		old_data:=left(old_data, length(old_data) - 2);
 		new_data:=left(new_data, length(new_data) - 2);
 		insert into activity_log(event_time,created_by,event_source,source_code, event_type,changed_data,data_old,data_new,client_id)
-		SELECT now(), user,'CLIENT',NEW.name,'UPDATE',changed_columns,old_data,new_data,NEW.id;
+		SELECT now(), NEW.updated_by,'CLIENT',NEW.name,'UPDATE',changed_columns,old_data,new_data,NEW.id;
         RETURN NEW;
     ELSIF (TG_OP = 'INSERT') THEN
 		changed_columns:='';
@@ -153,7 +153,7 @@ BEGIN
         new_data:=left(new_data, length(new_data) - 2);
 		changed_columns:=left(changed_columns, length(changed_columns) - 2);
 		insert into activity_log(event_time,created_by,event_source,source_code, event_type,changed_data,data_old,data_new,client_id)
-		SELECT now(), user,'CLIENT',NEW.name,'INSERT',changed_columns,old_data,new_data,NEW.id;
+		SELECT now(), NEW.created_by,'CLIENT',NEW.name,'INSERT',changed_columns,old_data,new_data,NEW.id;
         RETURN NEW;
     END IF;
     RETURN NULL;
@@ -162,9 +162,7 @@ $BODY$;
 
 
 INSERT INTO clients (
-    code,
     created_by,
-    updated_by,
     name,
     birthdate,
     country,
@@ -178,8 +176,6 @@ INSERT INTO clients (
     telephone,
     status
 ) VALUES (
-    'FEF123',
-    'user1',
     'user1',
     'John Doe',
     '1990-01-01',
@@ -219,6 +215,8 @@ FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL;
 ALTER TABLE clients ALTER COLUMN updated_by DROP NOT NULL;
 
 ALTER TABLE clients ALTER COLUMN updated_at DROP NOT NULL;
+
+ALTER TABLE clients ALTER COLUMN updated_at DROP DEFAULT;
 
 INSERT INTO clients (created_by, updated_by, name, birthdate, country, city, unloco, office_address, suburb, state, postal_code, email, telephone, status) VALUES ('user2','user2','John Doe 2','1990-02-03', 'Canada', 'Quebec','QB23895','234 Main St','Montreal','Quebec',23895,'john.doe2@example.com','0397063102',FALSE);
 INSERT INTO clients (created_by, updated_by, name, birthdate, country, city, unloco, office_address, suburb, state, postal_code, email, telephone, status) VALUES ('user3','user3','John Doe 3','1990-03-04', 'London', 'England','LD32589','345 Main St','Brent','London',32589,'john.doe3@example.com','0397063103',TRUE);

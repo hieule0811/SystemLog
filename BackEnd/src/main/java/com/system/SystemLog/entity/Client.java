@@ -28,7 +28,7 @@ public class Client {
     private String createdBy;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date updatedAt = new Date();
 

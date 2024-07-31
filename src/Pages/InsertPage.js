@@ -31,7 +31,7 @@ export const InsertPage = () => {
             setTentk(storedTentk);
         }
     }, []);
-    const createdBy = tentk, updatedBy = tentk;
+    const createdBy = tentk, updatedBy = '';
     const handleClose = () => {
         setFilters([]);
         setShow(false);

@@ -388,7 +388,7 @@ const SystemLogPage = () =>{
           method: 'DELETE',
         });
         if (response.ok) {
-          console.log('Deleted all logs successfully.');
+          alert('Deleted all logs successfully.');
           fetchData();
         } else {
           console.error('Failed to delete all logs.');
