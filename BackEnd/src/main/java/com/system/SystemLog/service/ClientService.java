@@ -4,6 +4,7 @@ import com.system.SystemLog.entity.Client;
 import com.system.SystemLog.entity.FilterCriteria;
 import com.system.SystemLog.exception.GlobalExceptionHandler;
 import com.system.SystemLog.repository.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,11 +77,19 @@ public class ClientService {
     public Client createClient(Client newClient) {
         return clientRepository.save(newClient);
     }
-    public void deleteClient(Long clientId) {
-        if (!clientRepository.existsById(clientId)) {
-            throw new GlobalExceptionHandler.ClientNotFoundException("Client not found with id: " + clientId);
-        }
-        clientRepository.deleteById(clientId);
+//    public void deleteClient(Long clientId) {
+//        if (!clientRepository.existsById(clientId)) {
+//            throw new GlobalExceptionHandler.ClientNotFoundException("Client not found with id: " + clientId);
+//        }
+//        clientRepository.deleteById(clientId);
+//    }
+    public void deleteClient(Long id, String updatedBy) {
+    Client existingClient = clientRepository.findById(id)
+            .orElseThrow(() -> new GlobalExceptionHandler.ClientNotFoundException("Client not found with id: " + id));
+
+    existingClient.setUpdatedBy(updatedBy);
+    clientRepository.save(existingClient);
+    clientRepository.delete(existingClient);
     }
 
     public Long getClientIdByCode(String code) {

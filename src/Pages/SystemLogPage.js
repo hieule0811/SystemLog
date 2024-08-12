@@ -4,7 +4,6 @@ import styles from '../Styles/SystemLogPage.module.scss';
 import { Form, FormControl, Button, InputGroup,Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CiFilter } from "react-icons/ci";
-import { LuBellRing } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
 import { FaTrash } from 'react-icons/fa';
 import Table from '../Components/Table.js';
@@ -16,6 +15,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import moment from 'moment';
 import { FiColumns } from "react-icons/fi";
 import { FaTimes } from 'react-icons/fa';
+import { BiSolidBellRing } from "react-icons/bi";
 const operatorOptions = {
   createdBy : ["contains","starts with","ends with"],
   eventSource : ["contains","starts with","ends with"],
@@ -195,37 +195,14 @@ const SystemLogPage = () =>{
   const [bodyData1,setBodyData1] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterData, setFilterData] = useState([]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('http://localhost:8080/logs');
-  //       const data = await response.json();
-  //       const formattedData = data.map(item => ({
-  //         event_time: moment(item.eventTime).format('DD/MM/YYYY HH:mm'),
-  //         created_by: item.createdBy,
-  //         event_source: item.eventSource,
-  //         source_code: item.sourceCode,
-  //         event_type: item.eventType,
-  //         changed_data: item.changedData,
-  //         old_row_data: item.dataOld,
-  //         new_row_data: item.dataNew,
-  //       }));
-  //       setBodyData1(formattedData);
-  //       setFilterData(formattedData);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     fetchData();
   }, []);
   const fetchData = async () => {
     try {
       const response = await fetch('http://localhost:8080/logs');
-      const data = await response.json();
+      const unsorted_data = await response.json();
+      const data = unsorted_data.reverse();
       const formattedData = data.map(item => ({
         event_time: moment(item.eventTime).format('DD/MM/YYYY HH:mm'),
         created_by: item.createdBy,
@@ -252,7 +229,9 @@ const SystemLogPage = () =>{
       const fetchData = async () => {
         try {
           const response = await fetch(`http://localhost:8080/logs/search?keyword=${searchQuery}`);
-          const data = await response.json();
+          const unsorted_data = await response.json();
+          const data = unsorted_data.reverse();
+
           const formattedData = data.map(item => ({
             event_time: moment(item.eventTime).format('DD/MM/YYYY HH:mm'),
             created_by: item.createdBy,
@@ -326,13 +305,14 @@ const SystemLogPage = () =>{
         body: JSON.stringify(filters),
 
       });
-      console.log(filters)
+      // console.log(filters)
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Network response was not ok: ${response.status} ${response.statusText} - ${errorText}`);
       }
-      const data = await response.json();
-      console.log(data);
+      const unsorted_data = await response.json();
+      const data = unsorted_data.reverse();
+      // console.log(data);
       const formattedData = data.map(item => {
         return {
           event_time: moment(item.eventTime).format('DD/MM/YYYY HH:mm'),
@@ -364,7 +344,8 @@ const SystemLogPage = () =>{
   const handleFilter = async (startTime, endTime) => {
     try {
       const response = await fetch(`http://localhost:8080/logs/filterByDate?startDate=${startTime}&endDate=${endTime}`);
-      const data = await response.json();
+      const unsorted_data = await response.json();
+      const data = unsorted_data.reverse();
       const formattedData = data.map(item => ({
         event_time: moment(item.eventTime).format('DD/MM/YYYY HH:mm'),
         created_by: item.createdBy,
@@ -413,6 +394,14 @@ const SystemLogPage = () =>{
     setFilters([]);
     setShowRemoveFilterButton(false);
   };
+  const getAvatarByTentk = (tentk) => {
+    const avatarMap = {
+      'Trung Hieu': 'avatar1.jpg',
+      'Nhat Linh': 'avatar2.jpg',
+      'Quang Nha': 'avatar3.jpg',
+    };
+    return avatarMap[tentk] || '/avatar4.jpg'; // Avatar mặc định nếu không tìm thấy
+  };
   return(
     <div className = {styles.systemlogContainer}>
       <div className = {styles.systemlogTop}>
@@ -421,12 +410,12 @@ const SystemLogPage = () =>{
           System Logs
         </div>
         {isFiltered && (
-            <Button variant="outline-danger" onClick={removeFilterHandler} style={{ marginLeft: '320px', marginTop:'25px',textAlign:'center',justifyContent:'center'}}>
+            <Button variant="outline-danger" onClick={removeFilterHandler} style={{ left: '300px', top:'25px',textAlign:'center',justifyContent:'center',position:'absolute'}}>
               <FaTimes /> Remove
             </Button>
         )}
         {showRemoveFilterButton && (
-          <Button variant="outline-danger" onClick={handleRemoveFilters} style={{ marginLeft: '320px', marginTop:'25px',textAlign:'center',justifyContent:'center'}}>
+          <Button variant="outline-danger" onClick={handleRemoveFilters} style={{ left: '300px', top:'25px',textAlign:'center',justifyContent:'center',position:'absolute'}}>
             <FaTimes /> Remove
           </Button>
         )}
@@ -446,9 +435,6 @@ const SystemLogPage = () =>{
                 <Button style = {{backgroundColor:'#13a89e'}} size="md">Search</Button>
               </InputGroup>
             </Form>
-            {/* <Button variant="primary" style={{ backgroundColor: '#13a89e'}} className={styles.customButton}>
-              <CiFilter className={styles.customFil} />
-            </Button> */}
             <button className = {styles.iconButton} onClick={handleShow}>
               <FiColumns className = {styles.customFil}/>
             </button>
@@ -480,11 +466,12 @@ const SystemLogPage = () =>{
         </div>
         <div className = {styles.test1}>
           <ul className = {styles.systemlogList}>
-            <li><LuBellRing /></li>
+            <li><BiSolidBellRing style = {{marginTop:'5px',marginRight:'-15px'}}/></li>
             <li>
               <div className = {styles.systemlogAva} onClick  = {handleClick}>
-                <div className = {styles.systemlogAva1}>{tentk}</div>
-                <div className = {styles.systemlogAva2}><RxAvatar/></div>
+                <div className = {styles.systemlogAva1}>{tentk.toUpperCase()}</div>
+                {/* <div className = {styles.systemlogAva2}><RxAvatar/></div> */}
+                <img src={getAvatarByTentk(tentk)} alt="avatar" className={styles.systemlogAva2} />
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
@@ -503,7 +490,7 @@ const SystemLogPage = () =>{
         </div>
       </div>
       <div className = {styles.systemlogBottom}>
-          <Table columns = {columns} data = {data}/>
+          <Table columns = {columns} data = {data} style = {{width: '1800px'}}/>
 
       </div>
     </div>

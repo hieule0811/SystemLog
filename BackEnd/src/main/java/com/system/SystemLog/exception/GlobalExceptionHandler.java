@@ -17,4 +17,15 @@ public class GlobalExceptionHandler {
             super(message);
         }
     }
+
+    @ExceptionHandler(JobContainerNotFoundException.class)
+    public ResponseEntity<String> handleJobContainerNotFoundException(JobContainerNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    public static class JobContainerNotFoundException extends RuntimeException {
+        public JobContainerNotFoundException(String message) {
+            super(message);
+        }
+    }
 }

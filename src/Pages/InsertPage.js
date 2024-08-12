@@ -1,12 +1,13 @@
 import React, {useState,useEffect} from 'react';
 import Sidebar from '../Components/Sidebar.js';
 import styles from '../Styles/InsertPage.module.scss';
-import {LuBellRing} from "react-icons/lu";
 import {RxAvatar} from "react-icons/rx";
 import {Menu, MenuItem} from "@mui/material";
 import {Link, useParams} from "react-router-dom";
 import {FiLogOut} from "react-icons/fi";
 import { Modal, Button } from 'react-bootstrap';
+import { IoIosArrowRoundBack } from "react-icons/io";
+import { BiSolidBellRing } from "react-icons/bi";
 export const InsertPage = () => {
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState([]);
@@ -131,20 +132,32 @@ export const InsertPage = () => {
             setModalShow(false);
         });
       };
+    const getAvatarByTentk = (tentk) => {
+        const avatarMap = {
+          'Trung Hieu': '/avatar1.jpg',
+          'Nhat Linh': '/avatar2.jpg',
+          'Quang Nha': '/avatar3.jpg',
+        };
+        return avatarMap[tentk] || '/avatar4.jpg'; // Avatar mặc định nếu không tìm thấy
+    };
     return (
         <div className={styles.clientContainer}>
             <div className={styles.clientTop}>
                 <hr></hr>
+
                 <div className={styles.textTitle}>
+                <Link to ="/client" style = {{ color: 'inherit' }}>
+                   <IoIosArrowRoundBack style = {{ fontSize:'30px',marginRight:'5px' }} className = {styles.arrowIcon}/>
+                </Link>
                     Clients {">"} New
                 </div>
                 <div className={styles.test1}>
                     <ul className={styles.clientList}>
-                        <li><LuBellRing/></li>
+                        <li><BiSolidBellRing style = {{marginTop:'5px',marginRight:'-15px'}}/></li>
                         <li>
                             <div className={styles.clientAva} onClick={handleClick}>
-                                <div className={styles.clientAva1}>{tentk}</div>
-                                <div className={styles.clientAva2}><RxAvatar/></div>
+                                <div className={styles.clientAva1}>{tentk.toUpperCase()}</div>
+                                <img src = {getAvatarByTentk(tentk)}  alt="avatar" className={styles.clientAva2} />
                                 <Menu
                                     anchorEl={anchorEl}
                                     open={Boolean(anchorEl)}
@@ -163,143 +176,141 @@ export const InsertPage = () => {
                 </div>
             </div>
             <div className={styles.newClient}>
-                <h5>INFORMATION</h5>
+                <h5 style = {{marginLeft: '-20px'}}>INFORMATION</h5>
                 <form className="newClientForm" onSubmit={handleSubmit}>
-                    <div className="inputGroup">
-                        <input
-                            style={{width: '500px'}}
-                            id="name"
-                            name="name"
-                            autoComplete="off"
-                            placeholder="Name*"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '500px', marginLeft: '20px'}}
-                            type="email"
-                            id="email"
-                            name="email"
-                            autoComplete="off"
-                            placeholder="Email"
-                            value = {email}
-                            onChange = {(e) => setEmail(e.target.value)}
-                        />
-                        <br/><br/>
-                        <input
-                            style={{width: '250px'}}
-                            id="country"
-                            name="country"
-                            autoComplete="off"
-                            placeholder="Country*"
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '250px', marginLeft: '20px'}}
-                            id="city"
-                            name="city"
-                            autoComplete="off"
-                            placeholder="City*"
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '375px', marginLeft: '20px'}}
-                            id="unloco"
-                            name="unloco"
-                            autoComplete="off"
-                            placeholder="Unloco*"
-                            value={unloco}
-                            onChange={(e) => setUnloco(e.target.value)}
-                            required/>
-                        <br/><br/>
-                        <input
-                            style={{width: '250px'}}
-                            id="suburb"
-                            name="suburb"
-                            autoComplete="off"
-                            placeholder="Suburb*"
-                            value={suburb}
-                            onChange={(e) => setSuburb(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '250px', marginLeft: '20px'}}
-                            id="state"
-                            name="state"
-                            autoComplete="off"
-                            placeholder="State*"
-                            value={state}
-                            onChange={(e) => setState(e.target.value)}
-                            required/>
-                        <select
-                            style={{width: '250px', marginLeft: '20px'}}
-                            id="status"
-                            name="status"
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            autoComplete="off">
-                            <option value="" disabled selected hidden>Status</option>
-                            <option value="true">Active</option>
-                            <option value="false">Inactive</option>
-                        </select>
-                        <br/><br/>
-                        <input
-                            style={{width: '600px'}}
-                            id="office_address"
-                            name="office_address"
-                            autoComplete="off"
-                            placeholder="Office Address*"
-                            value={officeAddress}
-                            onChange={(e) => setOfficeAddress(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '375px', marginLeft: '20px', postion: 'relative'}}
-                            id="postal_code"
-                            name="postal_code"
-                            autoComplete="off"
-                            placeholder="Postal Code*"
-                            value={postalCode}
-                            onChange={(e) => {
-                                setPostalCode(e.target.value);
-                                setPostalCodeError('');
-                            }}
-                            required/>
-                        {postalCodeError && <div style={{marginLeft:'620px',color: 'red',position:'absolute' }}>{postalCodeError}</div>}
-                        <br/><br/>
-                        <input
-                            id="birthdate"
-                            name="birthdate"
-                            // onChange={(date) => setBirthdate(date)}
-                            placeholder="dd/mm/yyyy"
-                            type="date"
-                            value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}
-                            required/>
-                        <input
-                            style={{width: '250px', marginLeft: '20px'}}
-                            id="telephone"
-                            name="telephone"
-                            autoComplete="off"
-                            placeholder="Telephone"
-                            value={telephone}
-                            onChange={(e) => setTelephone(e.target.value)}
-                            />
-                        <br/><br/>
-                        <label htmlFor="created_by">Created By</label>
-                        <input
-                            style={{width: '250px', marginLeft: '5px', backgroundColor: 'lightgrey'}}
-                            id="created_by"
-                            name="created_by"
-                            autoComplete="off"
-                            value={tentk}
-                            readOnly/>
-
-                        <br/><br/>
-                        <button type="submit" className="btn btn-primary" style={{marginBottom: '10px'}}>
-                            SAVE
-                        </button>
+                    <div className={styles.inputGroups}>
+                        <div className={styles.inputGroup} style={{width: '440px'}}>
+                            <input style={{width: '440px'}}
+                                   id="name"
+                                   name="name"
+                                   autoComplete="off"
+                                   value={name}
+                                   onChange={(e) => setName(e.target.value)}
+                                   required/>
+                            <label htmlFor="name">Name*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '250px'}}>
+                            <input style={{width: '250px',color:birthdate ? 'black':'#008031'}}
+                                   id="birthdate"
+                                   name="birthdate"
+                                   type="date"
+                                   value={birthdate}
+                                   onChange={(e) => setBirthdate(e.target.value)}
+                                   required/>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px'}}>
+                            <input style={{width: '440px'}}
+                                   id="country"
+                                   name="country"
+                                   autoComplete="off"
+                                   value={country}
+                                   onChange={(e) => setCountry(e.target.value)}
+                                   required/>
+                            <label htmlFor="country">Country*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px', marginTop: '-10px'}}>
+                            <input style={{width: '440px'}}
+                                   id="city"
+                                   name="city"
+                                   autoComplete="off"
+                                   value={city}
+                                   onChange={(e) => setCity(e.target.value)}
+                                   required/>
+                            <label htmlFor="city" style = {{marginTop: '0px'}}>City*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '250px', marginTop: '-10px'}}>
+                            <input style={{width: '250px'}}
+                                   id="unloco"
+                                   name="unloco"
+                                   value={unloco}
+                                   onChange={(e) => setUnloco(e.target.value)}
+                                   required/>
+                            <label htmlFor="unloco" style = {{marginTop: '0px'}}>UNLOCO*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px', marginTop: '-10px'}}>
+                            <input style={{width: '440px'}}
+                                   id="suburb"
+                                   name="suburb"
+                                   autoComplete="off"
+                                   value={suburb}
+                                   onChange={(e) => setSuburb(e.target.value)}
+                                   required/>
+                            <label htmlFor="suburb">Suburb*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '1150px', marginTop: '-10px'}}>
+                            <input style={{width: '1150px'}}
+                                   id="office_address"
+                                   name="office_address"
+                                   autoComplete="off"
+                                   value={officeAddress}
+                                   onChange={(e) => setOfficeAddress(e.target.value)}
+                                   required/>
+                            <label htmlFor="office_address" style = {{marginTop: '0px'}}>Office Address*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px', marginTop: '-10px'}}>
+                            <input style={{width: '440px'}}
+                                   id="state"
+                                   name="state"
+                                   autoComplete="off"
+                                   value={state}
+                                   onChange={(e) => setState(e.target.value)}
+                                   required/>
+                            <label htmlFor="state">State*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '250px', marginTop: '-10px'}}>
+                            <input style={{width: '250px'}}
+                                   id="postal_code"
+                                   name="postal_code"
+                                   value={postalCode}
+                                   onChange={(e) => setPostalCode(e.target.value)}
+                                   required/>
+                            <label htmlFor="postal_code">Postal Code*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px', marginTop: '-10px'}}>
+                            <input style={{width: '440px'}}
+                                   id="telephone"
+                                   name="telephone"
+                                   autoComplete="off"
+                                   value={telephone}
+                                   onChange={(e) => setTelephone(e.target.value)}
+                                   required/>
+                            <label htmlFor="telephone">Telephone*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '700px', marginTop: '-10px'}}>
+                            <input style={{width: '700px'}}
+                                   id="email"
+                                   name="email"
+                                   value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   required/>
+                            <label htmlFor="email">Email*</label>
+                        </div>
+                        <div className={styles.inputGroup} style={{width: '440px', marginTop: '0px'}}>
+                            <select
+                                style={{width: '440px', height: '40px',color: status? 'black':'#008031'}}
+                                id="status"
+                                name="status"
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                autoComplete="off">
+                                <option value="" disabled selected hidden style = {{ color:'red' }}>Status</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
                     </div>
+                    <label htmlFor="created_by" style = {{marginLeft: '-20px', marginTop: '-20px'}}>Created By</label>
+                    <input
+                        style={{width: '340px', marginLeft: '5px', height: '40px', backgroundColor: 'lightgrey', marginTop: '-10px',borderRadius: '5px'}}
+                        id="created_by"
+                        name="created_by"
+                        autoComplete="off"
+                        value={tentk}
+                        readOnly/>
+                    <br/><br/>
+                    <button type="submit" className="btn btn-primary" style = {{marginLeft: '-20px'}}>
+                        SAVE
+                    </button>
                 </form>
                 <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>

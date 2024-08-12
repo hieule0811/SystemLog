@@ -1,22 +1,29 @@
+.table-container {
+  width: 100%; /* Ensure container spans full width */
+  overflow-x: hidden; /* Hide horizontal scroll */
+}
+
 .setSizeTable {
-  width: 1278px;
+  width: 1225px;
   height: 450px;
   overflow-y: auto;
   overflow-x: auto;
+  margin-left: -30px;
+  margin-top: -30px;
   position: relative;
   border-radius: 5px;
 
   table {
     border-radius: 5px;
-    width: 100%;
+    width: 73%;
     border-spacing: 0;
     table-layout: fixed;
     td {
       padding: 8px;
       max-width: 200px;
-        overflow: hidden; // Ẩn nội dung bị tràn ra khỏi khung của ô
-        text-overflow: ellipsis; // Hiển thị dấu ba chấm khi nội dung bị tràn
-       white-space: nowrap;
+      overflow: hidden; // Ẩn nội dung bị tràn ra khỏi khung của ô
+      text-overflow: ellipsis; // Hiển thị dấu ba chấm khi nội dung bị tràn
+      white-space: nowrap;
     }
     thead tr:first-child {
       position: sticky;
@@ -55,6 +62,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+  margin-left: 0px;
 
   button {
     background-color: #13a89e;

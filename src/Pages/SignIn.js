@@ -5,7 +5,6 @@ import apollogixLogo from '../images/Apollogix-logo.jpg'
 import axios from 'axios';
 
 const SignIn = () => {
-    /* If user inputs username and/or password that cannot be found on database, an error will be alerted. This will be coded in JavaScript later. */
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -21,11 +20,12 @@ const SignIn = () => {
             const { email: userEmail, tentk, matkhau } = response.data;
             localStorage.setItem('tentk', tentk);
             localStorage.setItem('email', userEmail);
-            history(`/client/${tentk}`);
+            history(`/client`);
         } catch (error) {
             alert('Invalid username or password');
         }
     };
+
 
     return (
         <div className = {styles.setLayout}>

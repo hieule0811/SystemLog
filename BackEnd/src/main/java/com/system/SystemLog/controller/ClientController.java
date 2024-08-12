@@ -61,9 +61,9 @@ public class ClientController {
         return ResponseEntity.ok("Created client successfully");
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable Long id) {
+    public ResponseEntity<String> deleteClient(@PathVariable Long id, @RequestParam String updatedBy) {
         try {
-            clientService.deleteClient(id);
+            clientService.deleteClient(id, updatedBy);
             return ResponseEntity.ok("Client deleted successfully");
         } catch (GlobalExceptionHandler.ClientNotFoundException e) {
             return ResponseEntity.notFound().build();

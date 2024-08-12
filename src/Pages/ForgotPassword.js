@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import apollogixLogo from '../images/Apollogix-logo.jpg'
 
 const ForgotPassword = () => {
-    // If user inputs an email that cannot be found on database, an alert will be displayed. This will be coded in JavaScript later.
     return (
         <div className = {styles.setLayout}>
             <img src={apollogixLogo} style={{marginTop: '50px',marginBottom:'20px'}}/>

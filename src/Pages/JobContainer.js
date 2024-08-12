@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import Sidebar from '../Components/Sidebar.js';
-import styles from '../Styles/Client.module.scss';
+import styles from '../Styles/JobContainer.module.scss';
 import { Form, FormControl, Button, InputGroup,Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CiFilter } from "react-icons/ci";
@@ -11,24 +11,28 @@ import { IoIosAdd } from "react-icons/io";
 import { FiLogOut } from 'react-icons/fi';
 import Table from '../Components/Table.js';
 import { useParams } from 'react-router-dom';
-import {headerData, bodyData} from '../Common/utils.js';
+import {headerData2, bodyData2} from '../Common/utils.js';
 import { Menu, MenuItem } from '@mui/material';
 import { FaTimes } from 'react-icons/fa';
 import { BiSolidBellRing } from "react-icons/bi";
 const operatorOptions = {
-  code: ['contains','starts with', 'ends with'],
-  name: ['contains','starts with', 'ends with'],
-  birthdate: ['contains'],
-  country: ['contains','starts with', 'ends with'],
-  city: ['contains','starts with', 'ends with'],
-  unloco: ['contains','starts with', 'ends with'],
-  officeAddress: ['contains','starts with', 'ends with'],
-  suburb: ['contains','starts with', 'ends with'],
-  state: ['contains','starts with', 'ends with'],
-  postalCode: ['contains','starts with', 'ends with'],
-  telephone: ['contains','starts with', 'ends with'],
-  email: ['contains','starts with', 'ends with'],
-  status: ['contains']
+  status: ['contains'],
+  containerNumber: ['contains'],
+  sealNumber: ['contains','starts with', 'ends with'],
+  description: ['contains','starts with', 'ends with'],
+  tare: ['contains','starts with', 'ends with'],
+  net: ['contains','starts with', 'ends with'],
+  grossWeight: ['contains','starts with', 'ends with'],
+  isEmpty: ['contains'],
+  isFull: ['contains'],
+  containerInvoiceStatus: ['contains','starts with', 'ends with'],
+  isOverweightLevel1: ['contains'],
+  isOverweightLevel2: ['contains'],
+  level1Kg: ['contains','starts with', 'ends with'],
+  level2Kg: ['contains','starts with', 'ends with'],
+  titleLevel1: ['contains','starts with', 'ends with'],
+  titleLevel2: ['contains','starts with', 'ends with'],
+  standardKg: ['contains','starts with', 'ends with'],
 };
 
 const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFilter, removeFilter, handleSubmit }) => (
@@ -46,19 +50,23 @@ const ModalComponent = ({ show, handleClose, filters, handleFilterChange, addFil
             onChange={e => handleFilterChange(index, 'column', e.target.value)}
           >
             <option value="">Column</option>
-            <option value="code">Code</option>
-            <option value="name">Name</option>
-            <option value="birthdate">Birthdate</option>
-            <option value="country">Country</option>
-            <option value="city">City</option>
-            <option value="unloco">UNLOCO</option>
-            <option value="officeAddress">Office Address</option>
-            <option value="suburb">Suburb</option>
-            <option value="state">State</option>
-            <option value="postalCode">Postal Code</option>
-            <option value="telephone">Telephone</option>
-            <option value="email">Email</option>
             <option value="status">Status</option>
+            <option value="containerNumber">Container Number</option>
+            <option value="sealNumber">Seal Number</option>
+            <option value="description">Description</option>
+            <option value="tare">Tare</option>
+            <option value="net">Net</option>
+            <option value="grossWeight">Gross Weight</option>
+            <option value="isEmpty">Is Empty</option>
+            <option value="isFull">Is Full</option>
+            <option value="containerInvoiceStatus">Container Invoice Status</option>
+            <option value="isOverweightLevel1">Is Overweight Level 1</option>
+            <option value="isOverweightLevel2">Is Overweight Level 2</option>
+            <option value="level1Kg">Level 1 Kg</option>
+            <option value="level2Kg">Level 2 Kg</option>
+            <option value="titleLevel1">Title Level 1</option>
+            <option value="titleLevel2">Title Level 2</option>
+            <option value="standardKg">Standard Kg</option>
           </FormControl>
           <FormControl
             as="select"
@@ -106,8 +114,8 @@ const formatDateBack = (dateString) => {
   const [day,month,year] = dateString.split('/');
   return `${year}-${month}-${day}`;
 };
-const Client = () =>{
-  const columns = headerData;
+const JobContainer = () =>{
+  const columns = headerData2;
   const [bodyData,setBodyData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterData, setFilterData] = useState([]);
@@ -119,26 +127,30 @@ const Client = () =>{
     }
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/client');
+        const response = await fetch('http://localhost:8080/job_container');
         const unsorted_data = await response.json();
         const data = unsorted_data.reverse();
         const formattedData = data.map(item => ({
-          code: item.code,
-          name: item.name,
-          birthdate: formatDate(item.birthdate),
-          country: item.country,
-          city: item.city,
-          unloco: item.unloco,
-          office_address: item.officeAddress,
-          suburb: item.suburb,
-          state: item.state,
-          postal_code: item.postalCode,
-          telephone: item.telephone,
-          email: item.email,
-          status: item.status ? 'Active' : 'Inactive'
+          status: item.status ? 'Active' : 'Inactive',
+          container_number: item.containerNumber,
+          seal_number: item.sealNumber,
+          description: item.description,
+          tare: item.tare,
+          net: item.net,
+          gross_weight: item.grossWeight,
+          is_empty: item.isEmpty ? 'Yes' : 'No',
+          is_full: item.isFull ? 'Yes' : 'No',
+          container_invoice_status: item.containerInvoiceStatus,
+          is_overweight_level1: item.isOverweightLevel1 ? 'Yes' : 'No',
+          is_overweight_level2: item.isOverweightLevel2 ? 'Yes' : 'No',
+          level1_kg: item.level1Kg,
+          level2_kg: item.level2Kg,
+          title_level1: item.titleLevel1,
+          title_level2: item.titleLevel2,
+          standard_kg: item.standardKg,
         }));
         setBodyData(formattedData);
-        setFilterData(formattedData); // Set initial filterData to bodyData
+        setFilterData(formattedData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -150,23 +162,27 @@ const Client = () =>{
     if (searchQuery.trim() !== '') {
       const fetchData = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/client/search?keyword=${searchQuery}`);
+          const response = await fetch(`http://localhost:8080/job_container/search?keyword=${searchQuery}`);
           const unsorted_data = await response.json();
           const data = unsorted_data.reverse();
           const formattedData = data.map(item => ({
-            code: item.code,
-            name: item.name,
-            birthdate: formatDate(item.birthdate),
-            country: item.country,
-            city: item.city,
-            unloco: item.unloco,
-            office_address: item.officeAddress,
-            suburb: item.suburb,
-            state: item.state,
-            postal_code: item.postalCode,
-            telephone: item.telephone,
-            email: item.email,
-            status: item.status ? 'Active' : 'Inactive'
+            status: item.status ? 'Active' : 'Inactive',
+            container_number: item.containerNumber,
+            seal_number: item.sealNumber,
+            description: item.description,
+            tare: item.tare,
+            net: item.net,
+            gross_weight: item.grossWeight,
+            is_empty: item.isEmpty ? 'Yes' : 'No',
+            is_full: item.isFull ? 'Yes' : 'No',
+            container_invoice_status: item.containerInvoiceStatus,
+            is_overweight_level1: item.isOverweightLevel1 ? 'Yes' : 'No',
+            is_overweight_level2: item.isOverweightLevel2 ? 'Yes' : 'No',
+            level1_kg: item.level1Kg,
+            level2_kg: item.level2Kg,
+            title_level1: item.titleLevel1,
+            title_level2: item.titleLevel2,
+            standard_kg: item.standardKg,
           }));
           setFilterData(formattedData);
         } catch (error) {
@@ -229,7 +245,7 @@ const Client = () =>{
     });
     console.log(formattedFilters);
     try {
-      const response = await fetch ('http://localhost:8080/client/filter', {
+      const response = await fetch ('http://localhost:8080/job_container/filter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -244,10 +260,20 @@ const Client = () =>{
       const formattedData = data.map(item => {
         return {
           ...item,
-          birthdate: item.birthdate ? formatDate(item.birthdate) : '',
+          container_number: item.containerNumber,
+          seal_number: item.sealNumber,
+          gross_weight: item.grossWeight,
+          is_empty: item.isEmpty ? 'Yes' : 'No',
+          is_full: item.isFull ? 'Yes' : 'No',
+          container_invoice_status: item.containerInvoiceStatus,
           status: item.status ? 'Active' : 'Inactive',
-          postal_code: item.postalCode,
-          office_address: item.officeAddress
+          is_overweight_level1: item.isOverweightLevel1 ? 'Yes' : 'No',
+          is_overweight_level2: item.isOverweightLevel2 ? 'Yes' : 'No',
+          level1_kg: item.level1Kg,
+          level2_kg: item.level2Kg,
+          title_level1: item.titleLevel1,
+          title_level2: item.titleLevel2,
+          standard_kg: item.standardKg,
         };
       });
       setShowRemoveFilterButton(true);
@@ -260,7 +286,7 @@ const Client = () =>{
   const handleRemoveFilters = () => {
     setFilterData(bodyData);
     setFilters([]);
-    setShowRemoveFilterButton(false); // Hide the "Remove Filter" button
+    setShowRemoveFilterButton(false);
   };
   const getAvatarByTentk = (tentk) => {
     const avatarMap = {
@@ -271,17 +297,18 @@ const Client = () =>{
     return avatarMap[tentk] || '/avatar4.jpg';
   };
   return(
-    <div className = {styles.clientContainer}>
-      <div className = {styles.clientTop}>
+    <div className = {styles.jobcontainerContainer}>
+      <div className = {styles.jobcontainerTop}>
         <hr></hr>
         <div className = {styles.textTitle}>
-          Clients
+          Job Container
+
         </div>
         {showRemoveFilterButton && (
-              <Button variant="outline-danger" onClick={handleRemoveFilters} style={{left: '300px',position:'absolute',top:'25px',textAlign:'center',justifyContent:'center'}}>
-                <FaTimes /> Remove
-              </Button>
-          )}
+            <Button variant="outline-danger" onClick={handleRemoveFilters} style={{ left: '300px', top:'25px',textAlign:'center',justifyContent:'center', position: 'absolute'}}>
+              <FaTimes /> Remove
+            </Button>
+        )}
         <div className = {styles.test}>
 
             <Form className="d-flex justify-content-center align-items-center"
@@ -299,13 +326,10 @@ const Client = () =>{
                 <Button style = {{backgroundColor:'#13a89e'}} size="md">Search</Button>
               </InputGroup>
             </Form>
-            {/* <Button variant="primary" style={{ backgroundColor: '#13a89e'}} className={styles.customButton}>
-              <CiFilter className={styles.customFil} />
-            </Button> */}
             <button className = {styles.iconButton} onClick={handleShow}>
               <CiFilter className = {styles.customFil}/> FILTER
             </button>
-            <Link to = {`/client/insert`}>
+            <Link to = {`/jobcontainer/insert`}>
             <button className = {styles.addButton}>
               <IoIosAdd className = {styles.customAdd}/>
             </button>
@@ -323,13 +347,13 @@ const Client = () =>{
 
         </div>
         <div className = {styles.test1}>
-          <ul className = {styles.clientList}>
+          <ul className = {styles.jobcontainerList}>
             <li><BiSolidBellRing style = {{marginTop:'5px',marginRight:'-15px'}}/></li>
             <li>
-              <div className = {styles.clientAva} onClick={handleClick}>
-                <div className = {styles.clientAva1}>{tentk.toUpperCase()}</div>
-                {/* <div className = {styles.clientAva2}><RxAvatar/></div> */}
-                <img src = {getAvatarByTentk(tentk)} alt="avatar" className={styles.clientAva2} />
+              <div className = {styles.jobcontainerAva} onClick={handleClick}>
+                <div className = {styles.jobcontainerAva1}>{tentk.toUpperCase()}</div>
+                {/* <div className = {styles.jobcontainerAva2}><RxAvatar/></div> */}
+                <img src = {getAvatarByTentk(tentk)} alt="avatar" className={styles.jobcontainerAva2} />
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
@@ -347,9 +371,10 @@ const Client = () =>{
           </ul>
         </div>
       </div>
-      <div className = {styles.clientBottom}>
+      <div className = {styles.jobcontainerBottom}>
           <Table columns = {columns} data = {data}/>
       </div>
+
     </div>
   )
 }
@@ -357,7 +382,7 @@ function App(){
   return(
     <React.Fragment>
       <Sidebar/>
-      <Client/>
+      <JobContainer/>
     </React.Fragment>
   )
 }

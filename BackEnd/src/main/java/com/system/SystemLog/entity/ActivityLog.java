@@ -36,9 +36,8 @@ public class ActivityLog {
     @Column(name = "data_new")
     private String dataNew;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @Column(name = "source_id", nullable = false)
+    private Integer sourceId;
 
     // Getters and Setters
 
@@ -114,11 +113,11 @@ public class ActivityLog {
         this.dataNew = dataNew;
     }
 
-    public Client getClient() {
-        return client;
+    public Integer getSourceId() {
+        return sourceId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 }

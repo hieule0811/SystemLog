@@ -21,17 +21,18 @@ body {
   flex-direction: column;
 }
 
-.systemlogContainer {
+.jobcontainerContainer {
   margin-left: 14%;
   margin-top: 10px;
   margin-bottom: 5px;
   width: 86.8%;
+  margin-right: 0%;
   min-height: 100%;
   background-color: transparent;
   position: relative;
   padding: 20px;
 }
-.systemlogTop{
+.jobcontainerTop{
   background-color: white;
   margin-bottom:10px;
   margin-left:32px;
@@ -71,12 +72,10 @@ body {
 }
 
 .iconButton {
-  margin-top:30px;
+  margin-top:27px;
   margin-left:10px;
-  // width: 80px;
-  // height: 35px;
-  height:30px;
-  width:30px;
+  width: 80px;  /* Chỉnh chiều rộng */
+  height: 35px; /* Chỉnh chiều cao */
   padding: 0;
   display: flex;
   align-items: center;
@@ -87,10 +86,10 @@ body {
   color:white;
 }
 .customFil{
-  font-size:20px;
+  font-size:23px;
   color:white;
 }
-.systemlogList{
+.jobcontainerList{
   list-style-type: none;
   display:inline-flex;
   padding:0;
@@ -99,10 +98,8 @@ body {
     font-size: 20px;
   }
 }
-.systemlogAva{
+.jobcontainerAva{
   display:flex;
-  // padding-left:5px;
-  // padding-right:5px;
   padding:5px;
   &:hover{
     cursor:pointer;
@@ -110,19 +107,19 @@ body {
     border-radius:5px;
   }
 }
-.systemlogAva1{
+.jobcontainerAva1{
   font-size: 15px;
   margin-top:5px;
   margin-right:5px;
 }
-.systemlogAva2{
+.jobcontainerAva2{
   // font-size: 40px;
   // margin-top:-18px;
   width:30px;
-  height:30px;
+  height:30px ;
   border-radius:50%;
 }
-.systemlogBottom{
+.jobcontainerBottom{
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -131,9 +128,9 @@ body {
   flex-wrap: wrap;
   margin-bottom: 55px;
   padding: 40px;
-  border-radius: 5px;
+  border-radius: 10px;
 }
-.addDelete{
+.addButton{
   margin-left:10px;
   margin-top:30px;
   border-radius:5px;
@@ -147,6 +144,6 @@ body {
   background-color: #13a89e;
   color:white;
 }
-.customDelete{
-  font-size: 20px;
+.customAdd{
+  font-size: 23px;
 }

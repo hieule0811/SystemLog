@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "client")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false, unique = true,length = 6)
     @Size(min = 6, max = 6, message = "Code must be exactly 6 characters")
     private String code;
 

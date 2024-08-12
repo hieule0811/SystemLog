@@ -25,7 +25,9 @@ public interface ClientRepository extends JpaRepository<Client, Long>,ClientRepo
             "LOWER(CAST(c.postalCode AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(c.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(c.telephone) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "TO_CHAR(c.birthdate, 'DD/MM/YYYY') LIKE CONCAT('%', :keyword, '%')"
+            "TO_CHAR(c.birthdate, 'DD/MM/YYYY') LIKE CONCAT('%', :keyword, '%') OR "+
+            ":keyword = 'Active' AND c.status = true OR " +
+            ":keyword = 'Inactive' AND c.status = false"
     )
     List<Client> searchByKeyword(@Param("keyword") String keyword);
     Client findByCode(String code);

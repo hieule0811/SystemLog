@@ -7,6 +7,7 @@ import { LuUsers } from "react-icons/lu";
 import { GiBackwardTime } from "react-icons/gi";
 import { RxAvatar } from "react-icons/rx";
 import { CiLogout } from "react-icons/ci";
+import { FaTruck } from "react-icons/fa";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -47,6 +48,11 @@ const Sidebar = () => {
           path: `/client`
         },
         {
+          title: 'Job Containers',
+          icon: <FaTruck/>,
+          path: `/jobcontainer`
+        },
+        {
           title: 'System Logs',
           icon: <GiBackwardTime />,
           path: `/systemlog`
@@ -54,7 +60,14 @@ const Sidebar = () => {
       ]
     }
   ];
-
+  const getAvatarByTentk = (tentk) => {
+    const avatarMap = {
+      'Trung Hieu': '/avatar1.jpg',
+      'Nhat Linh': '/avatar2.jpg',
+      'Quang Nha': '/avatar3.jpg',
+    };
+    return avatarMap[tentk] || '/avatar4.jpg'; 
+  };
   return (
       <div className={styles.SidebarContainer}>
         <div className={styles.SidebarTop}>
@@ -101,9 +114,10 @@ const Sidebar = () => {
           <div className={styles.SidebarLog}>
             <ul className={styles.SidebarLogList}>
               <li className={styles.SidebarAvatar}>
-                <RxAvatar className={styles.SidebarAva} />
+                {/* <RxAvatar className={styles.SidebarAva} /> */}
+                <img src={getAvatarByTentk(tentk)} alt="avatar" className={styles.SidebarAva} />
                 <div className={styles.SidebarName}>
-                  {tentk}
+                  {tentk.toUpperCase()}
                 </div>
               </li>
               <li>

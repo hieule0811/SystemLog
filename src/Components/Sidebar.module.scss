@@ -1,7 +1,11 @@
 .SidebarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 15%;
   background-color: #263238;
-  height: 100vh; /* Đảm bảo sidebar chiếm toàn bộ chiều cao của viewport */
+  height: 100vh;
+  z-index: 1000;
 }
 
 .SidebarTop {
@@ -46,7 +50,7 @@
 
 .SidebarItem:hover {
   cursor: pointer;
-  background-color: #465055; /* Màu nền khi hover */
+  background-color: grey; /* Màu nền khi hover */
 }
 
 .activeMenu {
@@ -118,8 +122,11 @@
 }
 
 .SidebarAva {
-  font-size: 30px;
-  color: #d4d6d7;
+  // font-size: 30px;
+  // color: #d4d6d7;
+  width:30px;
+  height:30px;
+  border-radius: 50%;
 }
 
 .SidebarName {
