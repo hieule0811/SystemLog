@@ -7,6 +7,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import styles from '../Common/utils.module.scss';
+
 const Modal = ({ isOpen, onClose, data }) => {
   if (!isOpen) return null;
 
@@ -23,81 +24,102 @@ const Modal = ({ isOpen, onClose, data }) => {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 1000,
       }}>
-        <div style={{
-          padding: '20px',
-          backgroundColor: 'white',
-          borderRadius: '5px',
-          textAlign: 'left',
-        }}>
-          <center>
-            <RiErrorWarningLine style={{color: 'blue', fontSize: '50px'}}/>
-            <p style={{color: 'blue', fontSize: '15px', fontWeight: 'bold'}}>View Log</p>
-          </center>
-          <p><strong>Event Time:</strong>
-            <input
-                style={{width: '190px', marginLeft: '5px'}}
-                id="event_time"
-                name="event_time"
-                autoComplete="off"
-                value={data.event_time}
-                readOnly/>
-            <strong style={{marginLeft: '20px'}}>Created By:</strong>
-            <input
-                style={{width: '190px', marginLeft: '5px'}}
-                id="created_by"
-                name="created_by"
-                autoComplete="off"
-                value={data.created_by}
-                readOnly/>
-          </p>
-          <p>
-            <strong>Event Source:</strong>
-            <input
-                style={{width: '178px', marginLeft: '5px'}}
-                id="event_source"
-                name="event_source"
-                autoComplete="off"
-                value={data.event_source}
-                readOnly/>
-            <strong style={{marginLeft: '20px'}}>Source Code:</strong>
-            <input
-                style={{width: '180px', marginLeft: '5px'}}
-                id="source_code"
-                name="source_code"
-                autoComplete="off"
-                value={data.source_code}
-                readOnly/>
-          </p>
-          <p>
-            <strong>Event Type:</strong>
-            <input
-                style={{width: '190px', marginLeft: '5px'}}
-                id="event_type"
-                name="event_type"
-                autoComplete="off"
-                value={data.event_type}
-                readOnly/>
-          </p>
-          <p><strong>Changed data:</strong></p>
-          <textarea
-              style={{width: '550px', height: '100px'}}
-              id="changed_data"
-              name="changed_data"
-              autoComplete="off"
-              value={data.changed_data}
-              readOnly/>
-          <br/><br/>
-          <button onClick={onClose} style={{
-            bottom: '10px',
+          <div style={{
+              padding: '20px',
+              backgroundColor: 'white',
+              marginLeft: '90px',
+              width: '615px',
+              height: '480px',
+              borderRadius: '5px',
+              textAlign: 'left',
+          }}>
+              <div className={styles.clientTop}>
+                  <hr></hr>
+                  <div className={styles.textTitle}>
+                      View Log
+                  </div>
+              </div>
+            <div className={styles.inputGroups}>
+              <div className={styles.inputGroup} style={{width: '190px'}}>
+                <input
+                    style={{width: '190px', marginTop: '20px', marginLeft: '20px'}}
+                    id="event_time"
+                    name="event_time"
+                    autoComplete="off"
+                    value={data.event_time}
+                    readOnly/>
+                <strong style={{marginTop: '-30px', marginLeft: '20px'}}>Event Time:</strong>
+              </div>
+              <div className={styles.inputGroup} style={{width: '170px'}}>
+                <input
+                    style={{width: '170px', marginTop: '20px', marginLeft: '20px'}}
+                    id="created_by"
+                    name="created_by"
+                    autoComplete="off"
+                    value={data.created_by}
+                    readOnly/>
+                <strong style={{marginTop: '-30px', marginLeft: '20px'}}>Created By:</strong>
+              </div>
+              <div className={styles.inputGroup} style={{width: '190px'}}>
+                <input
+                    style={{width: '190px', marginTop: '20px', marginLeft: '20px'}}
+                    id="event_source"
+                    name="event_source"
+                    autoComplete="off"
+                    value={data.event_source}
+                    readOnly/>
+                <strong style={{marginTop: '-30px', marginLeft: '20px'}}>Event Source:</strong>
+              </div>
+            </div>
+            <div className={styles.inputGroups}>
+              <div className={styles.inputGroup} style={{width: '190px'}}>
+                <input
+                    style={{width: '190px', marginTop: '0px', marginLeft: '20px'}}
+                    id="source_code"
+                    name="source_code"
+                    autoComplete="off"
+                    value={data.source_code}
+                    readOnly/>
+                <strong style={{marginTop: '-40px', marginLeft: '20px'}}>Source Code:</strong>
+              </div>
+              <div className={styles.inputGroup} style={{width: '170px'}}>
+                <input
+                    style={{width: '170px', marginTop: '0px', marginLeft: '20px'}}
+                    id="event_type"
+                    name="event_type"
+                    autoComplete="off"
+                    value={data.event_type}
+                    readOnly/>
+                <strong style={{marginTop: '-40px', marginLeft: '20px'}}>Event Type:</strong>
+              </div>
+            </div>
+            <div className={styles.inputGroups}>
+              <div className={styles.inputGroup} style={{width: '570px'}}>
+                <textarea
+                  style={{width: '570px', height: '100px', marginTop: '0px', marginLeft: '20px'}}
+                  id="changed_data"
+                  name="changed_data"
+                  autoComplete="off"
+                  value={data.changed_data}
+                  readOnly/>
+                <strong style={{marginTop: '-65px', marginLeft: '20px'}}>Changed data:</strong>
+              </div>
+            </div>
+            <button onClick={onClose} style={{
+            marginBottom: '15px',
             right: '10px',
             color: 'white',
             backgroundColor: 'gray',
             border: 'none',
-            padding: '10px',
-            borderRadius: '5px'
+            paddingTop: '10px',
+            paddingBottom: '10px',
+            paddingLeft: '15px',
+            paddingRight: '15px',
+            borderRadius: '5px',
+            fontSize: '16px'
           }}>Close
           </button>
-        </div>
+          </div>
       </div>
   );
 };
@@ -114,18 +136,18 @@ const ActionIcon = ({ row }) => {
   };
 
   return (
-    <>
-      <MdOutlineRemoveRedEye onClick={handleClick} style={{
-      cursor: 'pointer',
-      color: 'white',
-      backgroundColor: '#13a89e',
-      width: '20px',
-      height: '18px',
-      borderRadius: '3px',
-      transition: 'background-color 0.3s ease'
-    }} />
-      <Modal isOpen={showDetails} onClose={handleClose} data={row} />
-    </>
+      <>
+        <MdOutlineRemoveRedEye onClick={handleClick} style={{
+          cursor: 'pointer',
+          color: 'white',
+          backgroundColor: '#13a89e',
+          width: '20px',
+          height: '18px',
+          borderRadius: '3px',
+          transition: 'background-color 0.3s ease'
+        }} />
+        <Modal isOpen={showDetails} onClose={handleClose} data={row} />
+      </>
   );
 };
 
@@ -150,7 +172,7 @@ export const ActionMenu = ({row, onDelete}) => {
   useEffect(() => {
     const storedTentk = localStorage.getItem('tentk');
     if (storedTentk) {
-        setTentk(storedTentk);
+      setTentk(storedTentk);
     }
   }, []);
   const handleDelete = async () => {
@@ -189,47 +211,47 @@ export const ActionMenu = ({row, onDelete}) => {
     setShowConfirm(false);
   };
   return (
-    <>
-    <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
-      <MenuItem onClick={() => handleMenuClick('update')}>
-      <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
-      Update
-      </MenuItem>
-      <MenuItem onClick={() => handleMenuClick('delete')}>
-      <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
-      Delete
-      </MenuItem>
-    </Menu>
-    {showConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            padding: '20px',
-            backgroundColor: '#b2d0f9',
-            border:'none',
-            borderRadius: '5px',
-            textAlign: 'center',
-          }}>
-            <RiErrorWarningLine
-            style = {{ color: 'blue', fontSize: '50px'}}
-            />
-            <p style = {{ color:'blue',fontSize:'15px', fontWeight:'bold' }}>CONFIRM</p>
-            <p>Are you sure want to delete this record?</p>
-            <button onClick={handleDelete} style={{ marginRight: '10px', color: 'white', backgroundColor: 'red', border: 'none', padding: '10px', borderRadius: '5px' }}>Delete</button>
-            <button onClick={handleCancel} style={{ color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Cancel</button>
-          </div>
-        </div>
-    )}
-    </>
+      <>
+        <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
+          <MenuItem onClick={() => handleMenuClick('update')}>
+            <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
+            Update
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuClick('delete')}>
+            <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
+            Delete
+          </MenuItem>
+        </Menu>
+        {showConfirm && (
+            <div style={{
+              position: 'fixed',
+              top: '0',
+              left: '0',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1000,
+            }}>
+              <div style={{
+                padding: '20px',
+                backgroundColor: '#b2d0f9',
+                border:'none',
+                borderRadius: '5px',
+                textAlign: 'center',
+              }}>
+                <RiErrorWarningLine
+                    style = {{ color: 'blue', fontSize: '50px'}}
+                />
+                <p style = {{ color:'blue',fontSize:'15px', fontWeight:'bold' }}>CONFIRM</p>
+                <p>Are you sure want to delete this record?</p>
+                <button onClick={handleDelete} style={{ marginRight: '10px', color: 'white', backgroundColor: 'red', border: 'none', padding: '10px', borderRadius: '5px' }}>Delete</button>
+                <button onClick={handleCancel} style={{ color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Cancel</button>
+              </div>
+            </div>
+        )}
+      </>
   );
 };
 export const ActionMenu1 = ({row, onDelete}) => {
@@ -252,7 +274,7 @@ export const ActionMenu1 = ({row, onDelete}) => {
   useEffect(() => {
     const storedTentk = localStorage.getItem('tentk');
     if (storedTentk) {
-        setTentk(storedTentk);
+      setTentk(storedTentk);
     }
   }, []);
   const handleDelete = async () => {
@@ -291,47 +313,47 @@ export const ActionMenu1 = ({row, onDelete}) => {
     setShowConfirm(false);
   };
   return (
-    <>
-    <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
-      <MenuItem onClick={() => handleMenuClick('update')}>
-      <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
-      Update
-      </MenuItem>
-      <MenuItem onClick={() => handleMenuClick('delete')}>
-      <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
-      Delete
-      </MenuItem>
-    </Menu>
-    {showConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            padding: '20px',
-            backgroundColor: '#b2d0f9',
-            border:'none',
-            borderRadius: '5px',
-            textAlign: 'center',
-          }}>
-            <RiErrorWarningLine
-            style = {{ color: 'blue', fontSize: '50px'}}
-            />
-            <p style = {{ color:'blue',fontSize:'15px', fontWeight:'bold' }}>CONFIRM</p>
-            <p>Are you sure want to delete this record?</p>
-            <button onClick={handleDelete} style={{ marginRight: '10px', color: 'white', backgroundColor: 'red', border: 'none', padding: '10px', borderRadius: '5px' }}>Delete</button>
-            <button onClick={handleCancel} style={{ color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Cancel</button>
-          </div>
-        </div>
-    )}
-    </>
+      <>
+        <Menu menuButton={<MenuButton style={{ border: 'none', background: 'transparent' }}><MdMoreVert /></MenuButton>}>
+          <MenuItem onClick={() => handleMenuClick('update')}>
+            <FaEdit style={{ color: 'blue', marginRight: '10px',fontSize:'15px' }} />
+            Update
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuClick('delete')}>
+            <FaTrash style={{ color: 'red', marginRight: '10px',fontSize: '15px' }} />
+            Delete
+          </MenuItem>
+        </Menu>
+        {showConfirm && (
+            <div style={{
+              position: 'fixed',
+              top: '0',
+              left: '0',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1000,
+            }}>
+              <div style={{
+                padding: '20px',
+                backgroundColor: '#b2d0f9',
+                border:'none',
+                borderRadius: '5px',
+                textAlign: 'center',
+              }}>
+                <RiErrorWarningLine
+                    style = {{ color: 'blue', fontSize: '50px'}}
+                />
+                <p style = {{ color:'blue',fontSize:'15px', fontWeight:'bold' }}>CONFIRM</p>
+                <p>Are you sure want to delete this record?</p>
+                <button onClick={handleDelete} style={{ marginRight: '10px', color: 'white', backgroundColor: 'red', border: 'none', padding: '10px', borderRadius: '5px' }}>Delete</button>
+                <button onClick={handleCancel} style={{ color: 'white', backgroundColor: 'gray', border: 'none', padding: '10px', borderRadius: '5px' }}>Cancel</button>
+              </div>
+            </div>
+        )}
+      </>
   );
 };
 export const headerData = [
@@ -588,5 +610,5 @@ export const headerData2 = [
     align: 'center',
     width:80,
   }
-  ]
+]
 export const bodyData2 = []
