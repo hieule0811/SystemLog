@@ -5,7 +5,7 @@ import {RxAvatar} from "react-icons/rx";
 import {Menu, MenuItem} from "@mui/material";
 import {Link, useParams} from "react-router-dom";
 import {FiLogOut} from "react-icons/fi";
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button , Alert} from 'react-bootstrap';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { BiSolidBellRing } from "react-icons/bi";
 export const InsertPage = () => {
@@ -24,6 +24,7 @@ export const InsertPage = () => {
     const [birthdate, setBirthdate] = useState('');
     const [telephone, setTelephone] = useState('');
     const [postalCodeError, setPostalCodeError] = useState('');
+    const [telephoneError, setTelephoneError] = useState('');
     const [modalShow, setModalShow] = useState(false);
     const [tentk, setTentk] = useState('');
     useEffect(() => {
@@ -69,11 +70,30 @@ export const InsertPage = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!/^\d+$/.test(postalCode)) {
-            setPostalCodeError('Postal code must be a number');
+        if (postalCodeError || telephoneError) {
             return;
         }
-        setModalShow(true); // Hiển thị modal khi nhấn SAVE
+        setModalShow(true);
+    };
+    const handlePostalCodeChange = (e) => {
+        const newPostalCode = e.target.value;
+        setPostalCode(newPostalCode);
+
+        if (!/^\d*$/.test(newPostalCode)) {
+            setPostalCodeError('Postal code must be a number');
+        } else {
+            setPostalCodeError('');
+        }
+    };
+    const handleTelephoneChange = (e) => {
+        const newTelephone = e.target.value;
+        setTelephone(newTelephone);
+
+        if (!/^\d*$/.test(newTelephone)) {
+            setTelephoneError('Telephone must be a number');
+        } else {
+            setTelephoneError('');
+        }
     };
     const handleModalClose = () => setModalShow(false);
     const handleConfirm= (e) => {
@@ -257,14 +277,15 @@ export const InsertPage = () => {
                                    required/>
                             <label htmlFor="state">State*</label>
                         </div>
-                        <div className={styles.inputGroup} style={{width: '250px', marginTop: '-10px'}}>
+                        <div className={styles.inputGroup} style={{width: '250px', marginTop: '-10px',position:'relative'}}>
                             <input style={{width: '250px'}}
                                    id="postal_code"
                                    name="postal_code"
                                    value={postalCode}
-                                   onChange={(e) => setPostalCode(e.target.value)}
+                                   onChange={handlePostalCodeChange}
                                    required/>
                             <label htmlFor="postal_code">Postal Code*</label>
+                            {postalCodeError && <div style = {{ color:'red',position:'absolute',top:'48px' }}>{postalCodeError}</div>}
                         </div>
                         <div className={styles.inputGroup} style={{width: '440px', marginTop: '-10px'}}>
                             <input style={{width: '440px'}}
@@ -272,9 +293,10 @@ export const InsertPage = () => {
                                    name="telephone"
                                    autoComplete="off"
                                    value={telephone}
-                                   onChange={(e) => setTelephone(e.target.value)}
+                                   onChange={handleTelephoneChange}
                                    required/>
                             <label htmlFor="telephone">Telephone*</label>
+                            {telephoneError && <div style = {{ color:'red',position:'absolute',top:'48px' }}>{telephoneError}</div>}
                         </div>
                         <div className={styles.inputGroup} style={{width: '700px', marginTop: '-10px'}}>
                             <input style={{width: '700px'}}
